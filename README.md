@@ -27,6 +27,8 @@
 ## 設計書
 ### 画面遷移図（UI Flow）
 ![画面遷移図](docs/images/uiflow.png)
+### ER図
+![ER Diagram](docs/images/er_diagram.png)
 後ほど作成予定
 ​
 ## 開発環境

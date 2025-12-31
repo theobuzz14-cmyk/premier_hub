@@ -29,6 +29,18 @@
 ![画面遷移図](docs/images/uiflow.png)
 ### ER図
 ![ER Diagram](docs/images/er_diagram.png)
+### テーブル定義
+詳細な型や制約については[こちらのスプレッドシート](https://docs.google.com/spreadsheets/d/1iftSEzT65KPO0Hnorf4kkEzUb_gJ9YduGhni4963028/edit?gid=1630132492#gid=1630132492)もご参照ください。
+
+| テーブル名 | 物理名 | 役割 |
+| :--- | :--- | :--- |
+| ユーザー | users | ユーザー情報・権限管理 |
+| チーム | teams | プレミアリーグ20チームのマスターデータ |
+| チーム参加 | user_teams | ユーザーとチームの中間テーブル |
+| スレッド | threads | チームごとの掲示板スレッド |
+| コメント | comments | スレッド内の投稿 |
+| 通報 | reports | 不適切コンテンツの管理 |
+
 後ほど作成予定
 ​
 ## 開発環境

@@ -50,6 +50,10 @@
 | コメント | comments | スレッド内の投稿 |
 | 通報 | reports | 不適切コンテンツの管理 |
 
+## アプリケーション詳細設計書 
+本アプリケーションの設計資料は以下のスプレッドシートにまとめています。
+- [設計資料（ルーティング・バリデーションなど）](https://docs.google.com/spreadsheets/d/1oJa1i8_ZIlLG-BEyH_73UlzAdQjGuDi1ot0LZ8yvzXg/edit?gid=331864542#gid=331864542)
+
 ​
 ## 開発環境
 - OS：Windows

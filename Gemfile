@@ -22,8 +22,23 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
+# 必須：ユーザー認証用
+gem 'devise'
+
+# 必須：外部API（API-Football）連携用
+gem 'faraday'
+
+# 推奨：検索機能用
+gem 'ransack'
+
+# 推奨：画像管理（Active Storage自体は標準搭載、画像加工用に）
+gem 'image_processing', '~> 1.2'
+
+# 挑戦：グラフ描画用
+gem 'chartjs-ror'
+
+# 挑戦：権限管理用
+gem 'pundit'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

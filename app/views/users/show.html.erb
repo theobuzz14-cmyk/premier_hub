@@ -1,0 +1,20 @@
+<h1>マイページ</h1>
+
+<p>名前: <%= @user.name %></p>
+<p>メールアドレス: <%= @user.email %></p>
+
+<%= link_to "プロフィールを編集する", edit_user_registration_path %>
+
+<h2>自分の投稿一覧</h2>
+<% if @posts.any? %>
+  <ul>
+    <% @posts.each do |post| %>
+      <li>
+        [<%= post.team.name %>] 
+        <%= link_to post.title, team_post_path(post.team, post) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>まだ投稿はありません。</p>
+<% end %>

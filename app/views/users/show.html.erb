@@ -18,3 +18,12 @@
 <% else %>
   <p>まだ投稿はありません。</p>
 <% end %>
+
+<hr>
+<h3>アカウント設定</h3>
+<p>
+  <%= button_to "退会する", user_registration_path, 
+      method: :delete, 
+      data: { confirm: "本当に退会しますか？（これまでの投稿もすべて削除されます）" },
+      class: "btn-delete" %>
+</p>

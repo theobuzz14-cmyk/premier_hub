@@ -1,0 +1,19 @@
+<h1><%= @team.name %> 掲示板</h1>
+
+<p><%= link_to "新規スレッドを作成する", new_team_post_path(@team) %></p>
+
+  <h2>スレッド一覧</h2>
+  <% if @posts.any? %>
+    <ul>
+      <% @posts.each do |post| %>
+        <li>
+          <%= link_to post.title, team_post_path(@team, post) %>
+          （投稿者: <%= post.user.name %>）
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>まだスレッドはありません。</p>
+  <% end %>
+
+<p><%= link_to "チーム一覧に戻る", root_path %></p>

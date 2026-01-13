@@ -1,0 +1,15 @@
+current directory: /home/ubuntu/environment/premier_hub/vendor/bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+/home/ubuntu/.rbenv/versions/3.1.2/bin/ruby -I /home/ubuntu/.rbenv/versions/3.1.2/lib/ruby/3.1.0 -r ./siteconf20260113-696110-ef2k2s.rb extconf.rb
+creating Makefile
+
+current directory: /home/ubuntu/environment/premier_hub/vendor/bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= clean
+
+current directory: /home/ubuntu/environment/premier_hub/vendor/bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\=
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/ubuntu/environment/premier_hub/vendor/bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20260113-696110-bx29y0/racc

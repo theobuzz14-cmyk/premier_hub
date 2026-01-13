@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.10'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -24,19 +24,14 @@ gem 'jbuilder', '~> 2.7'
 
 # 必須：ユーザー認証用
 gem 'devise'
-
 # 必須：外部API（API-Football）連携用
 gem 'faraday'
-
 # 推奨：検索機能用
 gem 'ransack'
-
 # 推奨：画像管理（Active Storage自体は標準搭載、画像加工用に）
 gem 'image_processing', '~> 1.2'
-
 # 挑戦：グラフ描画用
 gem 'chartjs-ror'
-
 # 挑戦：権限管理用
 gem 'pundit'
 
@@ -69,3 +64,12 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'dotenv-rails'
+group :production do
+  gem 'mysql2'
+end
+
+gem "net-smtp"
+gem "net-pop"
+gem "net-imap"

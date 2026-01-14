@@ -1,0 +1,15 @@
+<h1>スレッドの編集</h1>
+
+<%= form_with(model: [@team, @post], local: true) do |f| %>
+  <div>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.submit "更新する" %>
+<% end %>
+
+<%= link_to "キャンセル", team_post_path(@team, @post) %>

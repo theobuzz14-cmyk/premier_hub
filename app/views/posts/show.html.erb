@@ -1,0 +1,11 @@
+<h1><%= @post.title %></h1>
+<p>投稿者: <%= @post.user.name %></p>
+<hr>
+<p><%= simple_format(@post.body) %></p>
+
+<% if @post.user == current_user %>
+  <%= link_to "編集する", edit_team_post_path(@team, @post) %>
+  <%= button_to "削除する", team_post_path(@team, @post), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+<% end %>
+
+<p><%= link_to "掲示板に戻る", team_path(@team) %></p>

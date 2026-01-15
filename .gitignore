@@ -39,5 +39,4 @@
 yarn-debug.log*
 .yarn-integrity
 /.env
-
-echo "/vendor/bundle" >> .gitignore/vendor/bundle
+/vendor/bundle

@@ -70,6 +70,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'dotenv-rails'
 group :production do
   gem 'mysql2'
+  gem 'concurrent-ruby', '1.3.4'
 end
 
 gem "net-smtp"

@@ -1,0 +1,22 @@
+{
+  "response": [
+    {
+      "team": {
+        "name": "Arsenal",
+        "logo": "https://media.api-sports.io/football/teams/42.png"
+      }
+    },
+    {
+      "team": {
+        "name": "Manchester City",
+        "logo": "https://media.api-sports.io/football/teams/50.png"
+      }
+    },
+    {
+      "team": {
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      }
+    }
+  ]
+}

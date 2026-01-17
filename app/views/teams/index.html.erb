@@ -1,9 +1,14 @@
-<h1>プレミアリーグ チーム一覧</h1>
-
-  <div class="teams-container">
-    <% @teams.each do |team| %>
-      <div class="team-card">
-        <%= link_to team.name, team_path(team) %>
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+  <% @teams.each do |team| %>
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0">
+        <% # チームロゴ画像があればここに表示 %>
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold"><%= team.name %></h5>
+          <% # 詳細へのボタン %>
+          <%= link_to 'スレッドを見る', team_path(team), class: 'btn btn-outline-primary btn-sm mt-2 stretched-link' %>
+        </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</div>

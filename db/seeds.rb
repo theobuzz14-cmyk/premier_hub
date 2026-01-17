@@ -5,3 +5,24 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Team.destroy_all
+
+teams = [
+  { name: "Arsenal" }, { name: "Aston Villa" }, { name: "Bournemouth" },
+  { name: "Brentford" }, { name: "Brighton & Hove Albion" }, { name: "Chelsea" },
+  { name: "Crystal Palace" }, { name: "Everton" }, { name: "Fulham" },
+  { name: "Ipswich Town" }, { name: "Leicester City" }, { name: "Liverpool" },
+  { name: "Manchester City" }, { name: "Manchester United" }, { name: "Newcastle United" },
+  { name: "Nottingham Forest" }, { name: "Southampton" }, { name: "Tottenham Hotspur" },
+  { name: "West Ham United" }, { name: "Wolverhampton Wanderers" }
+]
+
+teams.each do |team_data|
+  # logo_url に仮の値を入れます（バリデーションを通すため）
+  Team.create!(
+    name: team_data[:name],
+    logo_url: "https://example.com/logo.png" 
+  )
+end
+
+puts "Successfully created #{Team.count} teams!"

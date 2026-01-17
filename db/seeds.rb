@@ -10,12 +10,15 @@ Team.destroy_all
 teams = [
   { name: "Arsenal" }, { name: "Aston Villa" }, { name: "Bournemouth" },
   { name: "Brentford" }, { name: "Brighton & Hove Albion" }, { name: "Chelsea" },
-  { name: "Crystal Palace" }, { name: "Everton" }, { name: "Fulham" },
-  { name: "Ipswich Town" }, { name: "Leicester City" }, { name: "Liverpool" },
+  { name: "Crystal Palace" }, { name: "Everton" }, { name: "Fulham" }, { name: "Liverpool" },
   { name: "Manchester City" }, { name: "Manchester United" }, { name: "Newcastle United" },
-  { name: "Nottingham Forest" }, { name: "Southampton" }, { name: "Tottenham Hotspur" },
-  { name: "West Ham United" }, { name: "Wolverhampton Wanderers" }
-]
+  { name: "Nottingham Forest" }, { name: "Tottenham Hotspur" }, { name: "West Ham United" },
+  { name: "Wolverhampton Wanderers" },
+  # 2025-26 昇格組
+  { name: "Sunderland" }, { name: "Burnley" }, { name: "Leeds" }
+].uniq # 重複を防ぐため
+
+# (中略) 残りの保存ロジック
 
 teams.each do |team_data|
   # logo_url に仮の値を入れます（バリデーションを通すため）

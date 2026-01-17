@@ -2,10 +2,14 @@
   <% @teams.each do |team| %>
     <div class="col">
       <div class="card h-100 shadow-sm border-0">
-        <% # チームロゴ画像があればここに表示 %>
         <div class="card-body text-center">
+          <div class="mb-3" style="height: 80px;">
+            <% if team.logo_url.present? %>
+              <%= image_tag team.logo_url, alt: team.name, class: "img-fluid h-100", style: "object-fit: contain;" %>
+            <% end %>
+          </div>
+          
           <h5 class="card-title fw-bold"><%= team.name %></h5>
-          <% # 詳細へのボタン %>
           <%= link_to 'スレッドを見る', team_path(team), class: 'btn btn-outline-primary btn-sm mt-2 stretched-link' %>
         </div>
       </div>

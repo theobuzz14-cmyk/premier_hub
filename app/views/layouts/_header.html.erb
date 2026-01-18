@@ -1,0 +1,43 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-3">
+    <div class="container">
+      <%# ロゴとタイトル %>
+      <%= link_to root_path, class: "navbar-brand d-flex align-items-center me-4" do %>
+        <%= image_tag 'logo.png', alt: 'Premier Hub Logo', height: '40', class: 'me-2' %>
+        <span class="fw-bold" style="color: #002097; font-size: 1.5rem;">Premier Hub</span>
+      <% end %>
+      
+      <%# スマホ用メニューボタン（PCでは隠れます） %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <%# ナビゲーションリンク %>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <%= link_to "About", about_path, class: "nav-link px-3 fw-medium" %>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto align-items-center">
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <%= link_to "マイページ", users_mypage_path, class: "nav-link px-3 fw-medium" %>
+            </li>
+            <li class="nav-item ms-lg-3">
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-outline-primary px-4" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "新規登録", new_user_registration_path, class: "nav-link px-3 fw-medium" %>
+            </li>
+            <li class="nav-item ms-lg-3">
+              <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary px-4 text-white" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

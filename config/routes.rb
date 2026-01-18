@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   end
 
   get 'about', to: 'homes#about', as: 'about'
+  get '/users/mypage', to: 'users#mypage', as: 'users_mypage'
 end

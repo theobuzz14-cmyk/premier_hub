@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to team_path(@team), notice: "スレッドを投稿しました！"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

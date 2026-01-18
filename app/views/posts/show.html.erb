@@ -72,11 +72,16 @@
 
       <div class="comments-list">
         <% if @post.comments.any? %>
-          <% @post.comments.each do |comment| %>
+          <% @post.comments.order(created_at: :desc).each do |comment| %>
             <div class="card shadow-sm border-0 mb-3 bg-light">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="fw-bold text-dark"><i class="bi bi-person-circle"></i> <%= comment.user.name %></span>
+                  <span class="fw-bold text-dark">
+                    <i class="bi bi-person-circle"></i> <%= comment.user.name %>
+                    <% if comment.user == @post.user %>
+                      <span class="badge bg-secondary ms-1" style="font-size: 0.7em;">投稿者</span>
+                    <% end %>
+                  </span>
                   <small class="text-muted"><%= l comment.created_at, format: :short %></small>
                 </div>
                 <p class="mb-0 text-secondary"><%= comment.body %></p>

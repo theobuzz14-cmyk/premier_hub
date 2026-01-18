@@ -7,11 +7,9 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      # チーム詳細ではなく「スレッド詳細(post)」に戻る
       redirect_to team_post_path(@post.team, @post), notice: 'コメントを投稿しました'
     else
-      # エラー時はスレッド詳細にそのまま戻す（後で改善可能）
-      redirect_to team_post_path(@post.team, @post), alert: 'コメントの投稿に失敗しました'
+      redirect_to team_post_path(@post.team, @post), alert: 'コメントを入力してください'
     end
   end
 

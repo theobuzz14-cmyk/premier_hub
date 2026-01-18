@@ -21,7 +21,12 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li><%= link_to "編集", edit_team_post_path(@team, @post), class: "dropdown-item" %></li>
-                  <li><%= link_to "削除", team_post_path(@team, @post), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "dropdown-item text-danger" %></li>
+                  <li>
+                    <%= button_to "削除", team_post_path(@team, @post), 
+                        method: :delete, 
+                        onclick: "return confirm('本当に削除しますか？')", 
+                        class: "dropdown-item text-danger w-100 text-start border-0 bg-transparent" %>
+                  </li>
                 </ul>
               </div>
             <% end %>

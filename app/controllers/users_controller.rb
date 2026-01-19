@@ -7,8 +7,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = current_user
-    @posts = @user.posts.order(created_at: :desc) # 自分が投稿したスレッド一覧
-    @commented_posts = Post.joins(:comments).where(comments: { user_id: @user.id }).distinct.order(created_at: :desc)
+    @user = User.find(params[:id])
+    # もし表示しようとしているユーザーが自分自身なら、マイページ(/users/mypage)へ飛ばす
+    if @user == current_user
+      redirect_to mypage_users_path
+      return
+    end
+    @posts = @user.posts.order(created_at: :desc)
   end
 end

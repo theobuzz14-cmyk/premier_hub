@@ -35,7 +35,7 @@
         <ul class="navbar-nav ms-auto align-items-center">
           <% if user_signed_in? %>
             <li class="nav-item">
-              <%= link_to "マイページ", users_mypage_path, class: "nav-link px-3 fw-medium" %>
+              <%= link_to "マイページ", mypage_users_path, class: "nav-link px-3 fw-medium" %>
             </li>
             <li class="nav-item ms-lg-3">
               <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-outline-primary px-4" %>

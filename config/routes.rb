@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'searches/index'
   devise_for :users
   
   root to: "teams#index"
@@ -12,4 +13,5 @@ Rails.application.routes.draw do
 
   get 'about', to: 'homes#about', as: 'about'
   get '/users/mypage', to: 'users#mypage', as: 'users_mypage'
+  get 'search', to: 'searches#index', as: 'search'
 end

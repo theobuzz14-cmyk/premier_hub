@@ -3,6 +3,6 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-    @posts = @user.posts.includes(:team) # 自分が投稿したスレッド一覧
+    @posts = @user.posts.order(created_at: :desc) # 自分が投稿したスレッド一覧
   end
 end

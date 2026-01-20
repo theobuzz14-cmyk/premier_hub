@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'posts/index'
+  end
   get 'searches/index'
   devise_for :users
   
@@ -17,4 +20,8 @@ Rails.application.routes.draw do
 
   get 'about', to: 'homes#about', as: 'about'
   get 'search', to: 'searches#index', as: 'search'
+
+  namespace :admin do
+    resources :posts, only: [:index, :destroy]
+  end
 end

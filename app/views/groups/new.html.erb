@@ -1,2 +1,19 @@
-<h1>Groups#new</h1>
-<p>Find me in app/views/groups/new.html.erb</p>
+<h1>新規グループ作成</h1>
+
+<%= form_with model: @group, local: true do |f| %>
+  <div>
+    <%= f.label :name, "グループ名" %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :introduction, "紹介文" %>
+    <%= f.text_area :introduction %>
+  </div>
+  <div>
+    <%= f.label :team_id, "対象チーム" %>
+    <%= f.collection_select :team_id, Team.all, :id, :name, include_blank: "選択してください" %>
+  </div>
+  <%= f.submit "作成する" %>
+<% end %>
+
+<%= link_to '戻る', groups_path %>

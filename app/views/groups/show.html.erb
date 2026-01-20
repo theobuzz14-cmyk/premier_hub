@@ -1,2 +1,19 @@
-<h1>Groups#show</h1>
-<p>Find me in app/views/groups/show.html.erb</p>
+<h1><%= @group.name %></h1>
+
+<div>
+  <p><strong>対象チーム:</strong> <%= @group.team.name %></p>
+  <p><strong>オーナー:</strong> <%= @group.owner.name %></p>
+  <p><strong>紹介文:</strong></p>
+  <p><%= simple_format(@group.introduction) %></p>
+</div>
+
+<hr>
+
+<% if @group.owner == current_user %>
+  <%# オーナー向け操作（設計書の役割定義より） %>
+  <%= link_to 'グループ情報を編集する', edit_group_path(@group), class: "btn btn-primary" %>
+<% else %>
+  <%# 非オーナー（一般ユーザー）向け表示：ここに参加申請ボタンなどを後ほど実装します %>
+<% end %>
+
+<%= link_to '一覧に戻る', groups_path %>

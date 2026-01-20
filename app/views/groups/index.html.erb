@@ -1,2 +1,27 @@
-<h1>Groups#index</h1>
-<p>Find me in app/views/groups/index.html.erb</p>
+<h1>グループ一覧</h1>
+<%= link_to '新規グループ作成', new_group_path, class: "btn btn-primary" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>対象チーム</th>
+      <th>グループ名</th>
+      <th>オーナー</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @groups.each do |group| %>
+      <tr>
+        <td><%= group.team.name %></td>
+        <td><%= link_to group.name, group_path(group) %></td>
+        <td><%= group.owner.name %></td>
+        <td>
+          <% if group.owner == current_user %>
+            <%= link_to '編集', edit_group_path(group), class: "btn btn-sm btn-outline-secondary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

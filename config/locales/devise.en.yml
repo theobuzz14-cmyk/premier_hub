@@ -63,3 +63,7 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+  ja:
+  devise:
+    failure:
+      withdraw: "このアカウントは退会済み、または管理者により停止されています。"

@@ -9,11 +9,28 @@
 
 <hr>
 
-<% if @group.owner == current_user %>
-  <%# オーナー向け操作（設計書の役割定義より） %>
-  <%= link_to 'グループ情報を編集する', edit_group_path(@group), class: "btn btn-primary" %>
-<% else %>
-  <%# 非オーナー（一般ユーザー）向け表示：ここに参加申請ボタンなどを後ほど実装します %>
+<% if user_signed_in? %>
+  <% if @group.owner_id == current_user.id %>
+    <%# 1. オーナー向け表示 %>
+    <%= link_to 'グループ情報を編集する', edit_group_path(@group), class: "btn btn-primary" %>
+    <%= link_to '参加申請一覧を確認する', group_group_users_path(@group), class: "btn btn-info" %>
+  <% else %>
+    <%# 2. 一般ユーザー向け表示：現在のステータスを確認 %>
+    <% group_user = current_user.group_users.find_by(group_id: @group.id) %>
+
+    <% if group_user.nil? %>
+      <%# 未参加の場合：参加申請ボタン %>
+      <%= link_to '参加申請を送る', group_group_users_path(@group), method: :post, class: "btn btn-success" %>
+    <% elsif group_user.pending? %>
+      <%# 申請中の場合：ラベル表示 %>
+      <span class="badge" style="background-color: #ffc107; color: #000;">承認待ちです</span>
+    <% elsif group_user.approved? %>
+      <%# 参加済みの場合：退会ボタン %>
+      <span class="badge" style="background-color: #ffc107; color: #000;">参加中</span>
+      <%= link_to 'グループを退会する', group_user_path(group_user), method: :delete, data: { confirm: "本当に退会しますか？" }, class: "btn btn-danger" %>
+    <% end %>
+  <% end %>
 <% end %>
 
+<br>
 <%= link_to '一覧に戻る', groups_path %>

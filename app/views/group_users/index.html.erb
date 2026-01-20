@@ -1,2 +1,29 @@
-<h1>GroupUsers#index</h1>
-<p>Find me in app/views/group_users/index.html.erb</p>
+<h1>「<%= @group.name %>」への参加申請一覧</h1>
+
+<% if @pending_users.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ユーザー名</th>
+        <th>アクション</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pending_users.each do |gu| %>
+        <tr>
+          <td><%= gu.user.name %></td>
+          <td>
+            <%# PATCHメソッドでupdateアクション（承認）へ %>
+            <%= link_to '承認', group_user_path(gu), method: :patch, class: "btn btn-sm btn-success" %>
+            <%# DELETEメソッドでdestroyアクション（却下）へ %>
+            <%= link_to '却下', group_user_path(gu), method: :delete, data: { confirm: "本当に却下しますか？" }, class: "btn btn-sm btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>現在、新しい申請はありません。</p>
+<% end %>
+
+<%= link_to '詳細に戻る', group_path(@group) %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_01_20_081045) do
+ActiveRecord::Schema.define(version: 2026_01_20_114251) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -20,6 +20,27 @@ ActiveRecord::Schema.define(version: 2026_01_20_081045) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "group_users", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "group_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id"], name: "index_group_users_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.text "introduction"
+    t.integer "owner_id", null: false
+    t.integer "team_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner_id"], name: "index_groups_on_owner_id"
+    t.index ["team_id"], name: "index_groups_on_team_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -58,6 +79,10 @@ ActiveRecord::Schema.define(version: 2026_01_20_081045) do
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "group_users", "groups"
+  add_foreign_key "group_users", "users"
+  add_foreign_key "groups", "teams"
+  add_foreign_key "groups", "users", column: "owner_id"
   add_foreign_key "posts", "teams"
   add_foreign_key "posts", "users"
 end

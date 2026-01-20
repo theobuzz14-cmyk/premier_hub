@@ -1,17 +1,31 @@
-<h1><%= @team.name %>：新規スレッド作成</h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="mb-4 text-center">
+        <h2 class="fw-bold"><%= @team.name %></h2>
+        <p class="text-muted">新しいスレッドを作成して、サポーターと盛り上がりましょう！</p>
+      </div>
 
-<%= form_with(model: [@team, @post], local: true) do |f| %>
-  <div>
-    <%= f.label :title, "タイトル" %><br>
-    <%= f.text_field :title %>
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <%= form_with(model: [@team, @post], local: true) do |f| %>
+            <div class="mb-3">
+              <%= f.label :title, "スレッドタイトル", class: "form-label fw-bold" %>
+              <%= f.text_field :title, class: "form-control form-control-lg", placeholder: "タイトルの例：今節のスタメン予想" %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :body, "内容", class: "form-label fw-bold" %>
+              <%= f.text_area :body, rows: 6, class: "form-control", placeholder: "話題を広げるための詳細を書いてください" %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.submit "スレッドを投稿する", class: "btn btn-primary btn-lg rounded-pill shadow-sm" %>
+              <%= link_to "戻る", team_path(@team), class: "btn btn-outline-secondary rounded-pill" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <%= f.label :body, "内容" %><br>
-    <%= f.text_area :body %>
-  </div>
-
-  <%= f.submit "投稿する" %>
-<% end %>
-
-<%= link_to "戻る", team_path(@team) %>
+</div>

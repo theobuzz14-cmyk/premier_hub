@@ -1,0 +1,53 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+$premier-hub-blue: #002097;
+
+:root {
+  --ph-main-blue: #{$premier-hub-blue};
+}
+
+// ボタンなどのアクセントとしてブランドカラーを使用
+.btn-primary {
+  background-color: var(--ph-main-blue) !important;
+  border-color: var(--ph-main-blue) !important;
+}
+
+.btn-outline-primary {
+  color: var(--ph-main-blue) !important;
+  border-color: var(--ph-main-blue) !important;
+  &:hover {
+    background-color: var(--ph-main-blue) !important;
+    color: white !important;
+  }
+}
+
+// サイト名のテキストカラーをブランドカラーにする
+.text-primary {
+  color: var(--ph-main-blue) !important;
+}
+
+.navbar-nav {
+  .nav-item {
+    // リンク同士の横の間隔を広げる
+    margin: 0 5px;
+  }
+}
+
+.navbar-brand {
+  // タイトルの色を固定
+  color: #002097 !important;
+}

@@ -1,11 +1,108 @@
-<h1><%= @post.title %></h1>
-<p>投稿者: <%= @post.user.name %></p>
-<hr>
-<p><%= simple_format(@post.body) %></p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "チーム一覧", root_path %></li>
+          <li class="breadcrumb-item"><%= link_to @team.name, team_path(@team) %></li>
+          <li class="breadcrumb-item active" aria-current="page text-truncate" style="max-width: 200px;"><%= @post.title %></li>
+        </ol>
+      </nav>
 
-<% if @post.user == current_user %>
-  <%= link_to "編集する", edit_team_post_path(@team, @post) %>
-  <%= button_to "削除する", team_post_path(@team, @post), method: :delete, data: { confirm: "本当に削除しますか？" } %>
-<% end %>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h1 class="h2 fw-bold mb-0"><%= @post.title %></h1>
+            
+            <% if user_signed_in? && @post.user == current_user %>
+              <div class="dropdown">
+                <button class="btn btn-light btn-sm rounded-circle" type="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><%= link_to "編集", edit_team_post_path(@team, @post), class: "dropdown-item" %></li>
+                  <li>
+                    <%= button_to "削除", team_post_path(@team, @post), 
+                        method: :delete, 
+                        onclick: "return confirm('本当に削除しますか？')", 
+                        class: "dropdown-item text-danger w-100 text-start border-0 bg-transparent" %>
+                  </li>
+                </ul>
+              </div>
+            <% end %>
+          </div>
 
-<p><%= link_to "掲示板に戻る", team_path(@team) %></p>
+          <div class="d-flex align-items-center text-muted mb-4 pb-3 border-bottom">
+            <span class="me-3">
+              <i class="bi bi-person-circle"></i> <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none fw-bold" %>
+            </span>
+            <span>
+              <i class="bi bi-clock"></i> <%= l @post.created_at, format: :long %>
+            </span>
+          </div>
+
+          <div class="post-body fs-5 leading-relaxed" style="white-space: pre-wrap;">
+            <%= @post.body %>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="mt-5">
+      <h4 class="fw-bold mb-4">コメント</h4>
+
+      <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+          <% if user_signed_in? %>
+            <%= form_with(model: [@team, @post, Comment.new], local: true) do |f| %>
+              <div class="mb-3">
+                <%= f.text_area :body, rows: 3, class: "form-control", placeholder: "サポーターとしてコメントを残す..." %>
+              </div>
+              <div class="text-end">
+                <%= f.submit "コメントする", class: "btn btn-primary rounded-pill px-4" %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="text-center py-3">
+              <p class="text-muted mb-0">コメントするには <%= link_to "ログイン", new_user_session_path %> が必要です。</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="comments-list">
+        <% if @post.comments.any? %>
+          <% @post.comments.order(created_at: :desc).each do |comment| %>
+            <div class="card shadow-sm border-0 mb-3 bg-light">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold text-dark">
+                    <i class="bi bi-person-circle"></i> <%= comment.user.name %>
+                    <% if comment.user == @post.user %>
+                      <span class="badge bg-secondary ms-1" style="font-size: 0.7em;">投稿者</span>
+                    <% end %>
+                  </span>
+                  <small class="text-muted"><%= l comment.created_at, format: :short %></small>
+                </div>
+                <p class="mb-0 text-secondary"><%= comment.body %></p>
+                
+                <% if user_signed_in? && comment.user == current_user %>
+                  <div class="text-end mt-2">
+                    <%= button_to team_post_comment_path(@team, @post, comment), method: :delete, onclick: "return confirm('コメントを削除しますか？')", class: "btn btn-link text-danger p-0 text-decoration-none small" do %>
+                      <i class="bi bi-trash"></i> 削除
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-muted text-center">まだコメントはありません。</p>
+        <% end %>
+      </div>
+      <div class="text-center mt-5 mb-3">
+        <%= link_to "← スレッド一覧に戻る", team_path(@team), class: "btn btn-outline-secondary rounded-pill px-4" %>
+      </div>
+    </div>
+  </div>
+</div>

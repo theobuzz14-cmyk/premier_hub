@@ -1,19 +1,37 @@
-<h1><%= @team.name %> 掲示板</h1>
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <% if @team.logo_url.present? %>
+      <%= image_tag @team.logo_url, alt: @team.name, style: "height: 100px; object-fit: contain;", class: "mb-3" %>
+    <% end %>
+    <h1 class="display-5 fw-bold"><%= @team.name %> 掲示板</h1>
+    <%= link_to "← チーム一覧に戻る", root_path, class: "text-decoration-none text-muted" %>
+  </div>
 
-<p><%= link_to "新規スレッドを作成する", new_team_post_path(@team) %></p>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">スレッド一覧</h2>
+        <%= link_to new_team_post_path(@team), class: "btn btn-primary rounded-pill px-4 shadow-sm" do %>
+          <i class="bi bi-plus-lg"></i> 新規スレッドを作成
+        <% end %>
+      </div>
 
-  <h2>スレッド一覧</h2>
-  <% if @posts.any? %>
-    <ul>
-      <% @posts.each do |post| %>
-        <li>
-          <%= link_to post.title, team_post_path(@team, post) %>
-          （投稿者: <%= post.user.name %>）
-        </li>
+      <% if @posts.any? %>
+        <div class="list-group shadow-sm">
+          <% @posts.each do |post| %>
+            <%= link_to team_post_path(@team, post), class: "list-group-item list-group-item-action p-4 border-start-0 border-end-0 border-top-0" do %>
+              <div class="d-flex w-100 justify-content-between align-items-center">
+                <h5 class="mb-1 fw-bold text-dark"><%= post.title %></h5>
+                <small class="text-muted">投稿者: <%= post.user.name %></small>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="card shadow-sm p-5 text-center bg-light border-0">
+          <p class="text-muted mb-0">まだスレッドはありません。最初のスレッドを立ててみませんか？</p>
+        </div>
       <% end %>
-    </ul>
-  <% else %>
-    <p>まだスレッドはありません。</p>
-  <% end %>
-
-<p><%= link_to "チーム一覧に戻る", root_path %></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body text-center p-4">
+          <div class="mb-3">
+            <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
+          </div>
+          <h3 class="fw-bold mb-1"><%= @user.name %></h3>
+          <p class="text-muted small mb-4"><%= @user.email %></p>
+          
+          <div class="d-grid gap-2">
+            <%= link_to edit_user_registration_path, class: "btn btn-outline-primary rounded-pill" do %>
+              <i class="bi bi-pencil-square"></i> プロフィール編集
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h6 class="fw-bold text-danger mb-3">アカウント設定</h6>
+          <%= button_to user_registration_path, 
+              method: :delete, 
+              form: { data: { turbo_confirm: "本当に退会しますか？（これまでの投稿もすべて削除されます）" } },
+              class: "btn btn-link text-danger p-0 text-decoration-none small" do %>
+            <i class="bi bi-exclamation-triangle"></i> 退会する
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <h4 class="fw-bold mb-4">
+        <i class="bi bi-chat-left-text me-2"></i>自分の投稿一覧
+      </h4>
+
+      <% if @posts.any? %>
+        <div class="list-group shadow-sm border-0">
+          <% @posts.each do |post| %>
+            <%= link_to team_post_path(post.team, post), class: "list-group-item list-group-item-action p-4 border-0 mb-2 rounded shadow-sm" do %>
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="fw-bold text-dark mb-0"><%= post.title %></h5>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">
+                  <%= post.team.name %>
+                </span>
+              </div>
+              <p class="text-muted small mb-0">
+                <i class="bi bi-clock"></i> <%= l post.created_at, format: :long %>
+              </p>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5 bg-white rounded shadow-sm">
+          <p class="text-muted mb-0">まだ投稿はありません。</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

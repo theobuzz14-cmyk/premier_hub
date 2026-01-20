@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+  get 'searches/index'
   devise_for :users
   
   root to: "teams#index"
   
-  resources :users, only: [:show]
+  resources :users, only: [:show] do
+    collection do
+      get 'mypage'
+    end
+  end
   resources :teams, only: [:index, :show] do
     resources :posts, except: [:index] do
       resources :comments, only: [:create, :destroy]
@@ -11,5 +16,5 @@ Rails.application.routes.draw do
   end
 
   get 'about', to: 'homes#about', as: 'about'
-  get '/users/mypage', to: 'users#mypage', as: 'users_mypage'
+  get 'search', to: 'searches#index', as: 'search'
 end

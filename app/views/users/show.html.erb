@@ -1,29 +1,18 @@
-<h1>マイページ</h1>
+<div class="col-md-4">
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body text-center p-4">
+      <div class="mb-3">
+        <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
+      </div>
+      <h3 class="fw-bold mb-1"><%= @user.name %></h3>
+      <p class="text-muted small">Premier Hub サポーター</p>
+    </div>
+  </div>
+</div>
 
-<p>名前: <%= @user.name %></p>
-<p>メールアドレス: <%= @user.email %></p>
-
-<%= link_to "プロフィールを編集する", edit_user_registration_path %>
-
-<h2>自分の投稿一覧</h2>
-<% if @posts.any? %>
-  <ul>
-    <% @posts.each do |post| %>
-      <li>
-        [<%= post.team.name %>] 
-        <%= link_to post.title, team_post_path(post.team, post) %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>まだ投稿はありません。</p>
-<% end %>
-
-<hr>
-<h3>アカウント設定</h3>
-<p>
-  <%= button_to "退会する", user_registration_path, 
-      method: :delete, 
-      data: { confirm: "本当に退会しますか？（これまでの投稿もすべて削除されます）" },
-      class: "btn-delete" %>
-</p>
+<div class="col-md-8">
+  <h4 class="fw-bold mb-4">
+    <i class="bi bi-chat-left-text me-2"></i><%= @user.name %> さんの投稿一覧
+  </h4>
+  <%# ... 投稿一覧のループ ... %>
+</div>

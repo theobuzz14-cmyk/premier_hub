@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   namespace :admin do
+    get 'users/index'
+  end
+  namespace :admin do
     get 'posts/index'
   end
   get 'searches/index'
@@ -23,5 +26,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :posts, only: [:index, :destroy]
+    resources :users, only: [:index, :update]
   end
 end

@@ -4,6 +4,11 @@ class Admin::PostsController < ApplicationController
 
   def index
     @posts = Post.all.order(created_at: :desc)
+    
+    # ダッシュボード用の統計データ
+    @total_posts_count = Post.count
+    @total_users_count = User.count
+    @today_posts_count = Post.where(created_at: Time.zone.now.all_day).count
   end
 
   def destroy

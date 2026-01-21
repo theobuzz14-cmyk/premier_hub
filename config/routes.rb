@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :group_users, only: [:index, :create]
   end
   resources :group_users, only: [:update, :destroy]
+  resources :reports, only: [:create]
 
   get 'about', to: 'homes#about', as: 'about'
   get 'search', to: 'searches#index', as: 'search'

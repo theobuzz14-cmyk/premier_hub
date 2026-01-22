@@ -31,6 +31,14 @@
           <div class="p-3 border-start border-danger border-4 bg-white shadow-sm">
             <%= @report.reason %>
           </div>
+          <div class="mt-3 border-top pt-3 text-end">
+            <% if @report.thread_id.present? %>
+              <%= button_to "このスレッドを削除する", admin_post_path(@report.post), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-sm btn-danger" %>
+            <% elsif @report.comment_id.present? %>
+              <%# コメント削除はチーム・スレッドのIDが必要な構造の場合、それらを指定して削除 %>
+              <%= button_to "このコメントを削除する", team_post_comment_path(@report.comment.post.team, @report.comment.post, @report.comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-sm btn-danger" %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

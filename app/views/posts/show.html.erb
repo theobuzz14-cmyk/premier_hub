@@ -108,21 +108,49 @@
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="fw-bold text-dark">
                     <i class="bi bi-person-circle"></i> <%= comment.user.name %>
-                    <% if comment.user == @post.user %>
-                      <span class="badge bg-secondary ms-1" style="font-size: 0.7em;">投稿者</span>
-                    <% end %>
                   </span>
                   <small class="text-muted"><%= l comment.created_at, format: :short %></small>
                 </div>
                 <p class="mb-0 text-secondary"><%= comment.body %></p>
-                
-                <% if user_signed_in? && comment.user == current_user %>
-                  <div class="text-end mt-2">
+
+                <div class="text-end mt-2">
+                  <% if user_signed_in? && comment.user != current_user %>
+                    <button type="button" class="btn btn-link text-danger p-0 text-decoration-none small me-3" data-bs-toggle="modal" data-bs-target="#reportCommentModal<%= comment.id %>">
+                      <i class="bi bi-exclamation-triangle"></i> 通報
+                    </button>
+                  <% end %>
+
+                  <% if user_signed_in? && comment.user == current_user %>
                     <%= button_to team_post_comment_path(@team, @post, comment), method: :delete, onclick: "return confirm('コメントを削除しますか？')", class: "btn btn-link text-danger p-0 text-decoration-none small" do %>
                       <i class="bi bi-trash"></i> 削除
                     <% end %>
+                  <% end %>
+                </div>
+
+                <%# --- コメント専用の通報モーダル（IDにcomment.idを含める） --- %>
+                <div class="modal fade" id="reportCommentModal<%= comment.id %>" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+                      <div class="modal-header bg-danger text-white p-2 px-3">
+                        <h6 class="modal-title">不適切なコメントを通報</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <%= form_with model: Report.new, url: reports_path, local: true do |f| %>
+                        <div class="modal-body py-3">
+                          <%= f.hidden_field :comment_id, value: comment.id %>
+                          <div class="mb-0">
+                            <%= f.label :reason, "通報理由", class: "form-label small fw-bold" %>
+                            <%= f.text_area :reason, class: "form-control form-control-sm", rows: 3, required: true, maxlength: 500 %>
+                          </div>
+                        </div>
+                        <div class="modal-footer p-2">
+                          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                          <%= f.submit "通報を送信", class: "btn btn-sm btn-danger" %>
+                        </div>
+                      <% end %>
+                    </div>
                   </div>
-                <% end %>
+                </div>
               </div>
             </div>
           <% end %>

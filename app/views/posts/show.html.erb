@@ -44,6 +44,36 @@
           <div class="post-body fs-5 leading-relaxed" style="white-space: pre-wrap;">
             <%= @post.body %>
           </div>
+          <div class="text-end mb-4">
+            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#reportPostModal">
+              <i class="bi bi-exclamation-triangle"></i> 通報
+            </button>
+
+            <div class="modal fade" id="reportPostModal" tabindex="-1" aria-labelledby="reportPostModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                  <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="reportPostModalLabel">スレッドを通報する</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <%= form_with model: Report.new, url: reports_path, local: true do |f| %>
+                    <div class="modal-body">
+                      <p class="text-muted small">不適切な内容や規約違反がある場合は、理由を入力して送信してください。</p>
+                      <%= f.hidden_field :thread_id, value: @post.id %>
+                      <div class="mb-3">
+                        <%= f.label :reason, "通報理由", class: "form-label fw-bold" %>
+                        <%= f.text_area :reason, class: "form-control", rows: 4, placeholder: "例：不適切な言葉遣い、誹謗中傷など", required: true, maxlength: 500 %>
+                      </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                      <%= f.submit "通報を送信", class: "btn btn-danger px-4" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

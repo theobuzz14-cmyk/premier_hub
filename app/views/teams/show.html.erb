@@ -48,6 +48,32 @@
         </div>
       </div>
     </div>
-    
+    <% if @squad_data.present? %>
+  <h3 class="mt-5 mb-4">Players (2024-25 Squad)</h3>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <% @squad_data.each do |squad| %>
+      <% squad["players"].each do |player| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm text-center">
+            <div class="p-3">
+              <img src="<%= player["photo"] %>" class="card-img-top rounded-circle mx-auto" style="width: 100px; height: 100px; object-fit: cover;" alt="<%= player["name"] %>">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title text-dark"><%= player["name"] %></h5>
+              <p class="card-text text-muted mb-1">
+                <span class="badge bg-secondary"><%= player["pos"] %></span>
+              </p>
+              <% if player["number"] %>
+                <p class="card-text"><small class="text-muted">No. <%= player["number"] %></small></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="mt-5 text-muted">No player data available for this team.</p>
+<% end %>
   </div>
 </div>

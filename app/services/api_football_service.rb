@@ -54,4 +54,22 @@ class ApiFootballService
       []
     end
   end
+
+  # リーグの順位表を取得する
+  def fetch_standings
+    response = Faraday.get("#{BASE_URL}/standings") do |req|
+      req.headers['x-apisports-key'] = @api_key
+      req.params['league'] = '39'
+      req.params['season'] = '2024'
+    end
+
+    if response.success?
+      # 階層が深いので掘り下げて返す
+      data = JSON.parse(response.body)
+      data['response'][0]['league']['standard_standings'] || 
+      data['response'][0]['league']['standings'][0] 
+    else
+      []
+    end
+  end
 end

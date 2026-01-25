@@ -64,12 +64,14 @@ class ApiFootballService
     end
 
     if response.success?
-      # 階層が深いので掘り下げて返す
       data = JSON.parse(response.body)
-      data['response'][0]['league']['standard_standings'] || 
-      data['response'][0]['league']['standings'][0] 
+      # 修正ポイント：エラーの原因となっている standard_standings をやめ、
+      # 確実に存在する階層までを dig で安全に取得します
+      data.dig('response', 0, 'league', 'standings', 0) || []
     else
       []
     end
+  rescue
+    []
   end
 end

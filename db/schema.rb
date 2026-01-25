@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_01_21_170900) do
+ActiveRecord::Schema.define(version: 2026_01_24_174041) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 2026_01_21_170900) do
     t.text "logo_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "api_team_id"
   end
 
   create_table "users", force: :cascade do |t|

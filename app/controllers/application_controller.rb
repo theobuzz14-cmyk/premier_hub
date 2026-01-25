@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :check_user_status
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_standings
 
 
   protected
@@ -32,6 +33,13 @@ class ApplicationController < ActionController::Base
   def admin_user
     unless current_user&.admin?
       redirect_to root_path, alert: "管理者権限が必要です。"
+    end
+  end
+
+  def set_standings
+    # 頻繁にAPIを叩くと制限に達するので、一旦簡易的なキャッシュを持たせる
+    @standings = Rails.cache.fetch("league_standings_2024", expires_in: 12.hours) do
+      ApiFootballService.new.fetch_standings
     end
   end
 end

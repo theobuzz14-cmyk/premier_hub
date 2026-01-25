@@ -1,0 +1,24 @@
+<div class="standings-sidebar p-3 border rounded bg-light">
+  <h5 class="fw-bold mb-3">League Table (24/25)</h5>
+  <table class="table table-sm align-middle" style="font-size: 0.85rem;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Team</th>
+        <th>Pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @standings&.each do |entry| %>
+        <tr>
+          <td><%= entry['rank'] %></td>
+          <td>
+            <img src="<%= entry['team']['logo'] %>" width="20" class="me-1">
+            <%= entry['team']['name'] %>
+          </td>
+          <td class="fw-bold"><%= entry['points'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

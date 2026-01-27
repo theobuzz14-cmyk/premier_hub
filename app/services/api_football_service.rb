@@ -40,36 +40,59 @@ class ApiFootballService
     end
   end
 
-  # 特定のチームの選手一覧を取得する
-  def fetch_players(team_id)
-    response = Faraday.get("#{BASE_URL}/players/squads") do |req|
-      req.headers['x-apisports-key'] = @api_key
-      # RapidAPI用のヘッダーは削除しました
-      req.params['team'] = team_id
-    end
+  # 特定の選手の詳細スタッツを取得（24時間キャッシュ）
+  def fetch_player_stats(player_id)
+    Rails.cache.fetch("player_stats_#{player_id}", expires_in: 24.hours) do
+      response = Faraday.get("#{BASE_URL}/players") do |req|
+        req.headers['x-apisports-key'] = @api_key
+        req.params['id'] = player_id
+        req.params['season'] = '2024'
+      end
 
-    if response.success?
-      JSON.parse(response.body)['response']
-    else
-      []
+      if response.success?
+        data = JSON.parse(response.body)
+        data['response']&.first # 選手の詳細データ（スタッツ含む）を返す
+      else
+        nil
+      end
     end
   end
 
-  # リーグの順位表を取得する
-  def fetch_standings
-    response = Faraday.get("#{BASE_URL}/standings") do |req|
-      req.headers['x-apisports-key'] = @api_key
-      req.params['league'] = '39'
-      req.params['season'] = '2024'
-    end
+  # チームの選手一覧（squad）を取得（24時間キャッシュ）
+  def fetch_squad(team_id)
+    Rails.cache.fetch("team_squad_#{team_id}", expires_in: 24.hours) do
+      response = Faraday.get("#{BASE_URL}/players/squads") do |req|
+        req.headers['x-apisports-key'] = @api_key
+        req.params['team'] = team_id
+      end
 
-    if response.success?
-      # 階層が深いので掘り下げて返す
-      data = JSON.parse(response.body)
-      data['response'][0]['league']['standard_standings'] || 
-      data['response'][0]['league']['standings'][0] 
-    else
-      []
+      if response.success?
+        data = JSON.parse(response.body)
+        # squadsエンドポイントは players 配列を返す構造
+        data.dig('response', 0, 'players') || []
+      else
+        []
+      end
     end
+  end
+
+  def fetch_standings
+    # "league_standings_2024" というキーで24時間保存
+    Rails.cache.fetch("league_standings_2024", expires_in: 24.hours) do
+      response = Faraday.get("#{BASE_URL}/standings") do |req|
+        req.headers['x-apisports-key'] = @api_key
+        req.params['league'] = '39'
+        req.params['season'] = '2024'
+      end
+
+      if response.success?
+        data = JSON.parse(response.body)
+        data.dig('response', 0, 'league', 'standings', 0) || []
+      else
+        []
+      end
+    end
+  rescue
+    []
   end
 end

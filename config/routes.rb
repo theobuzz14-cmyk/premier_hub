@@ -8,19 +8,17 @@ Rails.application.routes.draw do
       get 'mypage'
     end
   end
-
   resources :teams, only: [:index, :show] do
     resources :posts, except: [:index] do
       resources :comments, only: [:create, :destroy]
     end
   end
-
   resources :groups do
     resources :group_users, only: [:index, :create]
   end
   resources :group_users, only: [:update, :destroy]
-  
   resources :reports, only: [:create]
+  resources :players, only: [:show]
 
   get 'about', to: 'homes#about', as: 'about'
   get 'search', to: 'searches#index', as: 'search'

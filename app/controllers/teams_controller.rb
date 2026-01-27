@@ -13,7 +13,7 @@ class TeamsController < ApplicationController
     if @team.api_team_id.present?
       begin
         service = ApiFootballService.new
-        @squad_data = service.fetch_players(@team.api_team_id)
+        @squad = service.fetch_squad(@team.api_team_id)
       rescue => e
         logger.error "API Error: #{e.message}"
       end

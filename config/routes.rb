@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    get 'users/index'
-  end
-  namespace :admin do
-    get 'posts/index'
-  end
-  get 'searches/index'
   devise_for :users
   
   root to: "teams#index"
@@ -20,6 +13,12 @@ Rails.application.routes.draw do
       resources :comments, only: [:create, :destroy]
     end
   end
+  resources :groups do
+    resources :group_users, only: [:index, :create]
+  end
+  resources :group_users, only: [:update, :destroy]
+  resources :reports, only: [:create]
+  resources :players, only: [:show]
 
   get 'about', to: 'homes#about', as: 'about'
   get 'search', to: 'searches#index', as: 'search'
@@ -27,5 +26,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :posts, only: [:index, :destroy]
     resources :users, only: [:index, :update]
+    resources :reports, only: [:index, :show, :update]
+    resources :groups, only: [:destroy]
   end
 end

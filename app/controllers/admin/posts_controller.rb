@@ -1,14 +1,18 @@
 class Admin::PostsController < ApplicationController
   before_action :authenticate_user! # ログイン必須
-  before_action :admin_user           # 管理者必須（先ほど作ったメソッド）
+  before_action :admin_user           # 管理者必須
 
   def index
-    @posts = Post.all.order(created_at: :desc)
-    
+    @posts = Post.includes(:team, :user).order(created_at: :desc).page(params[:post_page]).per(10)
+    @comments = Comment.includes(:user, post: :team).order(created_at: :desc).page(params[:comment_page]).per(10)
+    @groups = Group.all.order(created_at: :desc).page(params[:group_page]).per(10)
+
     # ダッシュボード用の統計データ
     @total_posts_count = Post.count
     @total_users_count = User.count
     @today_posts_count = Post.where(created_at: Time.zone.now.all_day).count
+    @total_comments_count = Comment.count
+    @total_groups_count = Group.count
   end
 
   def destroy

@@ -1,0 +1,66 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>通報詳細 (ID: <%= @report.id %>)</h2>
+    <%= link_to "一覧に戻る", admin_reports_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">
+          通報された内容
+        </div>
+        <div class="card-body">
+          <h6 class="text-muted small mb-2">通報対象: 
+            <span class="badge <%= @report.thread_id.present? ? 'bg-primary' : 'bg-info text-dark' %>">
+              <%= @report.thread_id.present? ? 'スレッド' : 'コメント' %>
+            </span>
+          </h6>
+          
+          <div class="p-3 bg-light border rounded mb-3">
+            <% if @report.thread_id.present? %>
+              <strong>タイトル: <%= @report.post.title %></strong>
+              <hr>
+              <p class="mb-0"><%= @report.post.body %></p>
+            <% else %>
+              <p class="mb-0"><%= @report.comment.body %></p>
+            <% end %>
+          </div>
+
+          <h6 class="text-muted small mb-2">通報理由:</h6>
+          <div class="p-3 border-start border-danger border-4 bg-white shadow-sm">
+            <%= @report.reason %>
+          </div>
+          <div class="mt-3 border-top pt-3 text-end">
+            <% if @report.thread_id.present? %>
+              <%= button_to "このスレッドを削除する", admin_post_path(@report.post), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-sm btn-danger" %>
+            <% elsif @report.comment_id.present? %>
+              <%# コメント削除はチーム・スレッドのIDが必要な構造の場合、それらを指定して削除 %>
+              <%= button_to "このコメントを削除する", team_post_comment_path(@report.comment.post.team, @report.comment.post, @report.comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-sm btn-danger" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          対応ステータス
+        </div>
+        <div class="card-body">
+          <p class="mb-1">通報者: <strong><%= @report.user.name %></strong></p>
+          <p class="text-muted small mb-3">通報日時: <%= l @report.created_at, format: :long %></p>
+          
+          <%= form_with model: [:admin, @report], local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :status, "現在の状態", class: "form-label fw-bold" %>
+              <%= f.select :status, [["未処理", "pending"], ["処理済", "processed"]], {}, { class: "form-select" } %>
+            </div>
+            <%= f.submit "更新する", class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

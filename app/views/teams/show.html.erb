@@ -1,14 +1,15 @@
 <div class="container py-5">
-  <div class="text-center mb-5">
-    <% if @team.logo_url.present? %>
-      <%= image_tag @team.logo_url, alt: @team.name, style: "height: 100px; object-fit: contain;", class: "mb-3" %>
-    <% end %>
-    <h1 class="display-5 fw-bold"><%= @team.name %> 掲示板</h1>
-    <%= link_to "← チーム一覧に戻る", root_path, class: "text-decoration-none text-muted" %>
-  </div>
+  <div class="row g-5">
+    
+    <div class="col-lg-9">
+      <div class="text-center mb-5">
+        <% if @team.logo_url.present? %>
+          <%= image_tag @team.logo_url, alt: @team.name, style: "height: 100px; object-fit: contain;", class: "mb-3" %>
+        <% end %>
+        <h1 class="display-5 fw-bold"><%= @team.name %> 掲示板</h1>
+        <%= link_to "← チーム一覧に戻る", root_path, class: "text-decoration-none text-muted small" %>
+      </div>
 
-  <div class="row justify-content-center">
-    <div class="col-md-8">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="h4 mb-0">スレッド一覧</h2>
         <%= link_to new_team_post_path(@team), class: "btn btn-primary rounded-pill px-4 shadow-sm" do %>
@@ -17,7 +18,7 @@
       </div>
 
       <% if @posts.any? %>
-        <div class="list-group shadow-sm">
+        <div class="list-group shadow-sm mb-5">
           <% @posts.each do |post| %>
             <%= link_to team_post_path(@team, post), class: "list-group-item list-group-item-action p-4 border-start-0 border-end-0 border-top-0" do %>
               <div class="d-flex w-100 justify-content-between align-items-center">
@@ -27,11 +28,88 @@
             <% end %>
           <% end %>
         </div>
+        <div class="d-flex justify-content-center mb-5">
+          <%= paginate @posts %>
+        </div>
       <% else %>
-        <div class="card shadow-sm p-5 text-center bg-light border-0">
+        <div class="card shadow-sm p-5 text-center bg-light border-0 mb-5">
           <p class="text-muted mb-0">まだスレッドはありません。最初のスレッドを立ててみませんか？</p>
         </div>
       <% end %>
+
+      <div class="card border-0 shadow-sm bg-light mb-5">
+        <div class="card-body p-4 text-center">
+          <h5 class="fw-bold mb-3"><i class="bi bi-people-fill me-2"></i>コミュニティ機能</h5>
+          <p class="text-muted small mb-4">このチームのファン同士で交流できるグループを作成・閲覧できます。</p>
+          <div class="d-grid gap-2 d-md-block">
+            <%= link_to 'グループ一覧を見る', groups_path(team_id: @team.id), class: "btn btn-info rounded-pill px-4 me-md-2 text-white" %>
+            <%= link_to '新しいグループを作る', new_group_path(team_id: @team.id), class: "btn btn-outline-primary rounded-pill px-4" %>
+          </div>
+        </div>
+      </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+      <% @squad.each do |player| %>
+        <div class="col">
+          <%= link_to player_path(player['id']), class: "text-decoration-none" do %>
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+              <div class="card-body p-3 text-center">
+                <% if player['photo'] %>
+                  <img src="<%= player['photo'] %>" 
+                      alt="<%= player['name'] %>" 
+                      class="rounded-circle mb-2 shadow-sm"
+                      style="width: 60px; height: 60px; object-fit: cover;">
+                <% end %>
+                <div class="fw-bold text-dark small mb-1"><%= player['name'] %></div>
+                <span class="badge bg-light text-secondary border tiny-badge">
+                  <%= player['position'] %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      </div>
     </div>
+
+    <div class="col-lg-3">
+      <div class="sticky-top" style="top: 2rem; z-index: 10;">
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-dark text-white text-center py-3">
+            <h5 class="mb-0 fw-bold">順位表 (24/25)</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover table-sm mb-0" style="font-size: 0.85rem;">
+                <thead class="table-light text-center text-muted">
+                  <tr>
+                    <th>#</th>
+                    <th class="text-start">Team</th>
+                    <th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @standings&.each do |entry| %>
+                    <% # 現在のチームをハイライト %>
+                    <tr class="<%= 'table-primary fw-bold' if entry['team']['id'] == @team.api_team_id %> text-center">
+                      <td><%= entry['rank'] %></td>
+                      <td class="text-start text-truncate" style="max-width: 150px;">
+                        <img src="<%= entry['team']['logo'] %>" width="20" class="me-1" alt="">
+                        <%= entry['team']['name'] %>
+                      </td>
+                      <td><%= entry['points'] %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer bg-white text-center py-2">
+            <small class="text-muted">Premier League 2024-25</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

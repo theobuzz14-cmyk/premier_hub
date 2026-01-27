@@ -1,2 +1,83 @@
-<h1>Players#show</h1>
-<p>Find me in app/views/players/show.html.erb</p>
+<div class="container py-5">
+  <div class="mb-4">
+    <%= link_to '← 戻る', :back, class: "text-decoration-none text-muted" %>
+  </div>
+
+  <% if @player_data %>
+    <% player = @player_data['player'] %>
+    <% stats = @player_data['statistics'][0] %>
+
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm text-center p-4">
+          <div class="mb-3">
+            <img src="<%= player['photo'] %>" alt="<%= player['name'] %>" class="rounded-circle shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+          </div>
+          <h1 class="h3 fw-bold mb-1"><%= player['name'] %></h1>
+          <p class="text-muted mb-3"><%= stats['team']['name'] %> / <%= stats['games']['position'] %></p>
+          
+          <div class="row g-2 text-start border-top pt-3">
+            <div class="col-6 small text-muted">国籍:</div>
+            <div class="col-6 small fw-bold"><%= player['nationality'] %></div>
+            <div class="col-6 small text-muted">年齢:</div>
+            <div class="col-6 small fw-bold"><%= player['age'] %>歳</div>
+            <div class="col-6 small text-muted">身長/体重:</div>
+            <div class="col-6 small fw-bold"><%= player['height'] %> / <%= player['weight'] %></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-4 h-100">
+          <h2 class="h5 fw-bold mb-4">2024-25 シーズンスタッツ</h2>
+          
+          <div class="row g-4">
+            <div class="col-md-3 col-6 text-center">
+              <div class="display-6 fw-bold text-primary"><%= stats['games']['appearences'] || 0 %></div>
+              <div class="small text-muted">出場試合</div>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+              <div class="display-6 fw-bold text-success"><%= stats['goals']['total'] || 0 %></div>
+              <div class="small text-muted">ゴール</div>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+              <div class="display-6 fw-bold text-info"><%= stats['goals']['assists'] || 0 %></div>
+              <div class="small text-muted">アシスト</div>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+              <div class="display-6 fw-bold text-warning"><%= stats['games']['rating'] ? stats['games']['rating'].to_f.round(2) : '-' %></div>
+              <div class="small text-muted">平均評価</div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  パス成功率 <span class="fw-bold"><%= stats['passes']['accuracy'] %>%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  シュート数 <span class="fw-bold"><%= stats['shots']['total'] || 0 %></span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  タックル成功 <span class="fw-bold"><%= stats['tackles']['total'] || 0 %></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  ドリブル成功 <span class="fw-bold"><%= stats['dribbles']['success'] || 0 %></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-warning">選手データを読み込めませんでした。</div>
+  <% end %>
+</div>

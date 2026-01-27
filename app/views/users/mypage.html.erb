@@ -20,11 +20,20 @@
       <div class="card shadow-sm border-0">
         <div class="card-body p-4">
           <h6 class="fw-bold text-danger mb-3">アカウント設定</h6>
-          <%= button_to user_registration_path, 
-              method: :delete, 
-              form: { data: { turbo_confirm: "本当に退会しますか？（これまでの投稿もすべて削除されます）" } },
-              class: "btn btn-link text-danger p-0 text-decoration-none small" do %>
-            <i class="bi bi-exclamation-triangle"></i> 退会する
+          <% if @user == current_user %>
+            <div class="mt-5 border-top pt-4">
+              <% unless current_user.admin? %>
+                <p class="text-muted small">一度退会するとデータの復旧はできません。</p>
+                <%= link_to '退会する', withdraw_users_path, 
+                      method: :patch, 
+                      data: { confirm: "本当に退会しますか？" }, 
+                      class: "btn btn-outline-danger btn-sm" %>
+              <% else %>
+                <div class="alert alert-info d-inline-block small">
+                  <i class="bi bi-shield-lock"></i> 管理者アカウントはマイページから退会できません。
+                </div>
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>

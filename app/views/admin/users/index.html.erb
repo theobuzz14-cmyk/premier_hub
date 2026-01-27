@@ -19,7 +19,7 @@
           <% @users.each do |user| %>
             <tr>
               <td><%= user.id %></td>
-              <td class="fw-bold"><%= user.name %></td>
+              <td class="fw-bold"><%= link_to user.name, user_path(user), class: "fw-bold text-decoration-none" %></td>
               <td><%= user.email %></td>
               <td>
                 <% if user.is_active %>

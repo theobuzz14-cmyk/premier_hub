@@ -1,5 +1,6 @@
 class Admin::ReportsController < ApplicationController
-  before_action :authenticate_admin! # 管理者認証（既存のメソッドを想定）
+  before_action :authenticate_user!
+  before_action :admin_user
 
   def index
     @reports = Report.order(created_at: :desc)
@@ -24,8 +25,4 @@ class Admin::ReportsController < ApplicationController
     params.require(:report).permit(:status)
   end
   
-  # adminかどうかを確認するメソッドがない場合は適宜追加（既に実装済みであれば不要）
-  def authenticate_admin!
-    redirect_to root_path unless current_user&.admin?
-  end
 end

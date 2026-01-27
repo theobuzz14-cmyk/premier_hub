@@ -80,4 +80,17 @@
   <% else %>
     <div class="alert alert-warning">選手データを読み込めませんでした。</div>
   <% end %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h5 fw-bold mb-0">2024-25 シーズンスタッツ</h2>
+      
+      <%= form_with url: player_path(@player_data['player']['id']), method: :get, local: true, class: "d-flex gap-2" do %>
+        <%= select_tag :compare_id, 
+            options_for_select(@team_squad.map { |p| [p['name'], p['id']] }, params[:compare_id]), 
+            include_blank: "比較相手を選択...", 
+            class: "form-select form-select-sm",
+            onchange: "this.form.submit();" %>
+      <% end %>
+    </div>
+
 </div>

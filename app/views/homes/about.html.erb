@@ -1,3 +1,55 @@
-<h1>PremierHubへようこそ</h1>
-<p>このサイトは、プレミアリーグファンのための掲示板＆スタッツ比較アプリです。</p>
-<p>お気に入りのチームの掲示板で熱く語り合いましょう！</p>
+<div class="about-page">
+  <div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, #002097 0%, #020031 100%);">
+    <div class="container py-5 text-center">
+      <h1 class="display-4 fw-bold mb-3">Premier Hub</h1>
+      <p class="lead mb-4">プレミアリーグファンのための、最高に熱いコミュニティ。</p>
+      <% unless user_signed_in? %>
+        <%= link_to "今すぐ参加する", new_user_registration_path, class: "btn btn-light btn-lg px-5 fw-bold rounded-pill text-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-primary flex-shrink-0 me-3 p-3 rounded-circle shadow-sm">
+          <i class="bi bi-chat-dots-fill fs-2"></i>
+        </div>
+        <div>
+          <h3 class="fw-bold">掲示板</h3>
+          <p>お気に入りのチームごとに用意された専用スレッドで、試合の熱狂や移籍情報を語り合いましょう。</p>
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-primary flex-shrink-0 me-3 p-3 rounded-circle shadow-sm">
+          <i class="bi bi-bar-chart-fill fs-2"></i>
+        </div>
+        <div>
+          <h3 class="fw-bold">スタッツ比較</h3>
+          <p>API連携による選手データを使用。選手同士の能力をバタフライチャートで直感的に比較できます。</p>
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-primary flex-shrink-0 me-3 p-3 rounded-circle shadow-sm">
+          <i class="bi bi-people-fill fs-2"></i>
+        </div>
+        <div>
+          <h3 class="fw-bold">コミュニティ</h3>
+          <p>同じ熱量を持つファンを検索して繋がることができます。最新の話題をチェックしましょう。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="text-center py-5">
+      <h2 class="fw-bold mb-4">プレミアリーグの興奮を、もっと近くに。</h2>
+      <p class="text-muted mx-auto" style="max-width: 600px;">
+        Premier Hubは、全20クラブのファンが共存する場所を目指しています。
+        スタッツを根拠にした冷静な分析も、サポーターとしての熱い想いも、すべてここに。
+      </p>
+    </div>
+  </div>
+</div>

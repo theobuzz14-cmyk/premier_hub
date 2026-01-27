@@ -1,15 +1,16 @@
 module PlayersHelper
-  # 2つの値を比較して、左側の選手が占める割合(%)を計算する
-  def calculate_ratio(val1, val2)
-    val1 = val1.to_f
-    val2 = val2.to_f
-    return 50 if val1 + val2 == 0 # 両方0なら中央
-    (val1 / (val1 + val2) * 100).round
+  def comparison_color(val1, val2)
+    v1 = val1.to_f # nil.to_f は 0.0 になるので安全
+    v2 = val2.to_f
+    return "" if v1 == v2
+    v1 > v2 ? "fw-bold text-dark" : "text-muted"
   end
 
-  # 数値を比較して、大きい方に強調色を返す
-  def comparison_color(val1, val2)
-    return "text-dark" if val1 == val2
-    val1 > val2 ? "text-primary fw-bold" : "text-muted"
+  def calculate_ratio(val1, val2)
+    v1 = val1.to_f
+    v2 = val2.to_f
+    total = v1 + v2
+    return 50 if total == 0
+    (v1 / total * 100).round
   end
 end

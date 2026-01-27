@@ -1,6 +1,18 @@
 <div class="container py-5">
-  <div class="mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <%= link_to '← 戻る', :back, class: "text-decoration-none text-muted" %>
+    
+    <%# 比較相手選択プルダウン %>
+    <% if @team_players.present? %>
+      <div class="col-md-4">
+        <%= form_with url: player_path(params[:id]), method: :get, local: true, class: "d-flex gap-2" do |f| %>
+          <%= f.select :compare_id, 
+              options_for_select([['選手を比較する...', '']] + @team_players.map { |p| [p['name'], p['id']] }, params[:compare_id]),
+              {}, 
+              { class: "form-select form-select-sm shadow-sm", onchange: "this.form.submit();" } %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <% if @player_data %>
@@ -8,6 +20,7 @@
     <% stats = @player_data['statistics'][0] %>
 
     <div class="row g-4">
+      <%# 左側：プロフィールカード %>
       <div class="col-lg-4">
         <div class="card border-0 shadow-sm text-center p-4">
           <div class="mb-3">
@@ -27,70 +40,89 @@
         </div>
       </div>
 
+      <%# 右側：スタッツ表示 %>
       <div class="col-lg-8">
         <div class="card border-0 shadow-sm p-4 h-100">
           <h2 class="h5 fw-bold mb-4">2024-25 シーズンスタッツ</h2>
           
-          <div class="row g-4">
-            <div class="col-md-3 col-6 text-center">
+          <div class="row g-4 text-center">
+            <div class="col-md-3 col-6">
               <div class="display-6 fw-bold text-primary"><%= stats['games']['appearences'] || 0 %></div>
               <div class="small text-muted">出場試合</div>
             </div>
-            <div class="col-md-3 col-6 text-center">
+            <div class="col-md-3 col-6">
               <div class="display-6 fw-bold text-success"><%= stats['goals']['total'] || 0 %></div>
               <div class="small text-muted">ゴール</div>
             </div>
-            <div class="col-md-3 col-6 text-center">
+            <div class="col-md-3 col-6">
               <div class="display-6 fw-bold text-info"><%= stats['goals']['assists'] || 0 %></div>
               <div class="small text-muted">アシスト</div>
             </div>
-            <div class="col-md-3 col-6 text-center">
+            <div class="col-md-3 col-6">
               <div class="display-6 fw-bold text-warning"><%= stats['games']['rating'] ? stats['games']['rating'].to_f.round(2) : '-' %></div>
-              <div class="small text-muted">平均評価</div>
+              <div class="small text-muted">評価点</div>
             </div>
           </div>
 
           <hr class="my-4">
 
-          <div class="row">
+          <div class="row mb-4">
             <div class="col-md-6">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                  パス成功率 <span class="fw-bold"><%= stats['passes']['accuracy'] %>%</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                  シュート数 <span class="fw-bold"><%= stats['shots']['total'] || 0 %></span>
-                </li>
+              <ul class="list-group list-group-flush small">
+                <li class="list-group-item d-flex justify-content-between px-0">パス成功率 <span><%= stats['passes']['accuracy'] %>%</span></li>
+                <li class="list-group-item d-flex justify-content-between px-0">シュート数 <span><%= stats['shots']['total'] || 0 %></span></li>
               </ul>
             </div>
             <div class="col-md-6">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                  タックル成功 <span class="fw-bold"><%= stats['tackles']['total'] || 0 %></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                  ドリブル成功 <span class="fw-bold"><%= stats['dribbles']['success'] || 0 %></span>
-                </li>
+              <ul class="list-group list-group-flush small">
+                <li class="list-group-item d-flex justify-content-between px-0">タックル <span><%= stats['tackles']['total'] || 0 %></span></li>
+                <li class="list-group-item d-flex justify-content-between px-0">ドリブル <span><%= stats['dribbles']['success'] || 0 %></span></li>
               </ul>
             </div>
           </div>
+
+          <%# バタフライチャート（比較時のみ） %>
+          <% if @compare_player_data %>
+            <% c_player = @compare_player_data['player'] %>
+            <% c_stats = @compare_player_data['statistics'][0] %>
+
+            <div class="mt-4 p-4 bg-light rounded shadow-sm border">
+              <div class="d-flex justify-content-between align-items-center mb-4 px-lg-5 text-center">
+                <div style="width: 80px;">
+                  <img src="<%= player['photo'] %>" class="rounded-circle mb-2 border border-primary shadow-sm" style="width: 50px;">
+                  <div class="fw-bold" style="font-size: 0.7rem;"><%= player['name'] %></div>
+                </div>
+                <div class="h5 fw-bold text-muted">VS</div>
+                <div style="width: 80px;">
+                  <img src="<%= c_player['photo'] %>" class="rounded-circle mb-2 border border-danger shadow-sm" style="width: 50px;">
+                  <div class="fw-bold" style="font-size: 0.7rem;"><%= c_player['name'] %></div>
+                </div>
+              </div>
+
+                <% [
+                  ['ゴール', stats.dig('goals', 'total') || 0, c_stats.dig('goals', 'total') || 0],
+                  ['アシスト', stats.dig('goals', 'assists') || 0, c_stats.dig('goals', 'assists') || 0],
+                  ['パス成功率', stats.dig('passes', 'accuracy') || 0, c_stats.dig('passes', 'accuracy') || 0],
+                  ['評価点', (stats.dig('games', 'rating').to_f.round(2) rescue 0), (c_stats.dig('games', 'rating').to_f.round(2) rescue 0)]
+                ].each do |label, v1, v2| %>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between small mb-1">
+                    <span class="<%= comparison_color(v1, v2) %>"><%= v1 %><%= label == 'パス成功率' ? '%' : '' %></span>
+                    <span class="text-muted fw-bold"><%= label %></span>
+                    <span class="<%= comparison_color(v2, v1) %>"><%= v2 %><%= label == 'パス成功率' ? '%' : '' %></span>
+                  </div>
+                  <div class="progress" style="height: 10px; background-color: #e9ecef;">
+                    <div class="progress-bar bg-primary" style="width: <%= calculate_ratio(v1, v2) %>%"></div>
+                    <div class="progress-bar bg-danger" style="width: <%= 100 - calculate_ratio(v1, v2) %>%"></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
   <% else %>
     <div class="alert alert-warning">選手データを読み込めませんでした。</div>
   <% end %>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="h5 fw-bold mb-0">2024-25 シーズンスタッツ</h2>
-      
-      <%= form_with url: player_path(@player_data['player']['id']), method: :get, local: true, class: "d-flex gap-2" do %>
-        <%= select_tag :compare_id, 
-            options_for_select(@team_squad.map { |p| [p['name'], p['id']] }, params[:compare_id]), 
-            include_blank: "比較相手を選択...", 
-            class: "form-select form-select-sm",
-            onchange: "this.form.submit();" %>
-      <% end %>
-    </div>
-
 </div>

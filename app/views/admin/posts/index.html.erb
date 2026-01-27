@@ -7,48 +7,39 @@
     <div class="col-md-3">
       <div class="card border-0 shadow-sm bg-primary text-white">
         <div class="card-body p-4">
-          <h6 class="text-uppercase small fw-bold opacity-75">総ユーザー数</h6>
-          <h2 class="display-6 fw-bold mb-0"><%= @total_users_count %> <small class="fs-6">名</small></h2>
+          <h6 class="text-uppercase small fw-bold opacity-75">総グループ数</h6>
+          <h2 class="display-6 fw-bold mb-0"><%= @total_groups_count %> <small class="fs-6">件</small></h2>
         </div>
       </div>
     </div>
+
     <div class="col-md-3">
-      <div class="card border-0 shadow-sm bg-dark text-white">
+      <div class="card border-0 shadow-sm bg-info text-white">
         <div class="card-body p-4">
-          <h6 class="text-uppercase small fw-bold opacity-75">総投稿数</h6>
-          <h2 class="display-6 fw-bold mb-0"><%= @total_posts_count %> <small class="fs-6">件</small></h2>
+          <h6 class="text-uppercase small fw-bold opacity-75">総コメント数</h6>
+          <h2 class="display-6 fw-bold mb-0"><%= @total_comments_count %> <small class="fs-6">件</small></h2>
         </div>
       </div>
     </div>
     
     <div class="col-md-3">
-      <div class="card border-0 shadow-sm bg-warning text-dark">
+      <div class="card border-0 shadow-sm bg-secondary text-white">
         <div class="card-body p-4">
-          <h6 class="text-uppercase small fw-bold opacity-75">本日の新規投稿</h6>
-          <h2 class="display-6 fw-bold mb-0"><%= @today_posts_count %> <small class="fs-6">件</small></h2>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card border-0 shadow-sm <%= Report.pending.any? ? 'bg-danger text-white' : 'bg-light text-muted' %>">
-        <div class="card-body p-4">
-          <h6 class="text-uppercase small fw-bold opacity-75">未処理の通報</h6>
-          <h2 class="display-6 fw-bold mb-0"><%= Report.pending.count %> <small class="fs-6">件</small></h2>
+          <h6 class="text-uppercase small fw-bold opacity-75">直近7日間の投稿</h6>
+          <h2 class="display-6 fw-bold mb-0"><%= Post.where(created_at: 1.week.ago..Time.current).count %> <small class="fs-6">件</small></h2>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold mb-0">最近の投稿監視</h4>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">コンテンツ管理</h4>
     <div class="d-flex gap-2">
       <%= link_to admin_users_path, class: "btn btn-primary shadow-sm" do %>
-        <i class="bi bi-person-lines-fill me-1"></i> ユーザー管理へ
+        <i class="bi bi-person-lines-fill me-1"></i> ユーザー管理
       <% end %>
-
       <%= link_to admin_reports_path, class: "btn btn-danger shadow-sm" do %>
-        <i class="bi bi-exclamation-octagon-fill me-1"></i> 通報管理へ
+        <i class="bi bi-exclamation-octagon-fill me-1"></i> 通報管理
         <% if Report.pending.any? %>
           <span class="badge rounded-pill bg-white text-danger ms-1"><%= Report.pending.count %></span>
         <% end %>
@@ -56,40 +47,95 @@
     </div>
   </div>
 
-<div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-danger"><i class="bi bi-shield-lock-fill"></i> 管理者用：全投稿一覧</h2>
-    <span class="badge bg-secondary">合計: <%= @posts.count %> 件</span>
-  </div>
+  <ul class="nav nav-tabs mb-4" id="adminTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active fw-bold text-danger" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">全投稿一覧</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold text-danger" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">全コメント一覧</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold text-danger" id="groups-tab" data-bs-toggle="tab" data-bs-target="#groups" type="button" role="tab">全グループ一覧</button>
+    </li>
+  </ul>
 
-  <div class="card shadow-sm border-0">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="bg-light">
-          <tr>
-            <th>投稿日</th>
-            <th>チーム</th>
-            <th>投稿者</th>
-            <th>タイトル</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @posts.each do |post| %>
-            <tr>
-              <td class="small"><%= l post.created_at, format: :short %></td>
-              <td><span class="badge bg-outline-primary text-primary border border-primary"><%= post.team.name %></span></td>
-              <td><%= post.user.name %></td>
-              <td class="fw-bold"><%= link_to post.title, team_post_path(post.team, post), target: "_blank" %></td>
-              <td>
-                <%= link_to admin_post_path(post), method: :delete, data: { confirm: "この投稿を強制削除しますか？" }, class: "btn btn-outline-danger btn-sm" do %>
-                  <i class="bi bi-trash"></i> 削除
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+  <div class="tab-content" id="adminTabContent">
+    <div class="tab-pane fade show active" id="posts" role="tabpanel">
+      <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+              <tr>
+                <th>投稿日</th><th>チーム</th><th>投稿者</th><th>タイトル</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @posts.each do |post| %>
+                <tr>
+                  <td class="small"><%= l post.created_at, format: :short %></td>
+                  <td><span class="badge bg-outline-primary text-primary border border-primary"><%= post.team.name %></span></td>
+                  <td><%= post.user.name %></td>
+                  <td class="fw-bold"><%= link_to post.title, team_post_path(post.team, post), target: "_blank" %></td>
+                  <td><%= link_to '削除', admin_post_path(post), method: :delete, data: { confirm: "削除しますか？" }, class: "btn btn-outline-danger btn-sm" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="comments" role="tabpanel">
+      <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+              <tr>
+                <th>投稿日</th><th>投稿者</th><th>内容</th><th>対象投稿</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @comments.each do |comment| %>
+                <tr>
+                  <td class="small"><%= l comment.created_at, format: :short %></td>
+                  <td><%= comment.user.name %></td>
+                  <td class="small"><%= truncate(comment.body, length: 30) %></td>
+                  <td><%= link_to "詳細", team_post_path(comment.post.team, comment.post), target: "_blank" %></td>
+                  <td>
+                    <%= link_to '削除', team_post_comment_path(comment.post.team, comment.post, comment), method: :delete, data: { confirm: "削除しますか？" }, class: "btn btn-outline-danger btn-sm" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="groups" role="tabpanel">
+      <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+              <tr>
+                <th>作成日</th><th>グループ名</th><th>紹介</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @groups.each do |group| %>
+                <tr>
+                  <td class="small"><%= l group.created_at, format: :short %></td>
+                  <td class="fw-bold"><%= link_to group.name, group_path(group), target: "_blank" %></td>
+                  <td class="small"><%= truncate(group.introduction, length: 50) %></td>
+                  <td>
+                    <%= link_to '削除', admin_group_path(group), method: :delete, data: { confirm: "削除しますか？" }, class: "btn btn-outline-danger btn-sm" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

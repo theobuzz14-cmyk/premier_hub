@@ -27,5 +27,6 @@ Rails.application.routes.draw do
     resources :posts, only: [:index, :destroy]
     resources :users, only: [:index, :update]
     resources :reports, only: [:index, :show, :update]
+    resources :groups, only: [:destroy]
   end
 end

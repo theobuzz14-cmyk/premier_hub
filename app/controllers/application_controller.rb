@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     # 新規登録時にnameカラムを許可
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     # プロフィール更新時にnameカラムを許可
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name,:avatar])
   end
 
   private

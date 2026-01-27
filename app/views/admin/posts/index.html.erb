@@ -40,6 +40,9 @@
       <% end %>
       <%= link_to admin_reports_path, class: "btn btn-danger shadow-sm" do %>
         <i class="bi bi-exclamation-octagon-fill me-1"></i> 通報管理
+        <% if Report.pending.any? %>
+          <span class="badge rounded-pill bg-white text-danger ms-1"><%= Report.pending.count %></span>
+        <% end %>
       <% end %>
     </div>
   </div>

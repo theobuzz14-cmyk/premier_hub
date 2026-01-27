@@ -83,6 +83,9 @@
           </table>
         </div>
       </div>
+      <div class="d-flex justify-content-center mt-4 mb-2">
+        <%= paginate @posts, param_name: :post_page %>
+      </div>
     </div>
 
     <div class="tab-pane fade" id="comments" role="tabpanel">
@@ -110,6 +113,9 @@
           </table>
         </div>
       </div>
+      <div class="d-flex justify-content-center mt-4 mb-2">
+        <%= paginate @comments, param_name: :comment_page %>
+      </div>
     </div>
 
     <div class="tab-pane fade" id="groups" role="tabpanel">
@@ -135,6 +141,9 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="d-flex justify-content-center mt-4 mb-2">
+        <%= paginate @groups, param_name: :group_page %>
       </div>
     </div>
   </div>

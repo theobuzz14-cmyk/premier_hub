@@ -37,6 +37,8 @@ gem 'chartjs-ror'
 # 挑戦：権限管理用
 gem 'pundit'
 
+gem 'kaminari'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 

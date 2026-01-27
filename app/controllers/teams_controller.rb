@@ -5,7 +5,7 @@ class TeamsController < ApplicationController
 
   def show
     @team = Team.find(params[:id])
-    @posts = @team.posts.includes(:user)
+    @posts = @team.posts.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
 
     @squad_data = []
 

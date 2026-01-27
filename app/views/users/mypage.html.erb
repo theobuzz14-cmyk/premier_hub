@@ -4,7 +4,11 @@
       <div class="card shadow-sm border-0 mb-4">
         <div class="card-body text-center p-4">
           <div class="mb-3">
-            <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
+            <% if @user.avatar.attached? %>
+              <%= image_tag @user.avatar, class: "rounded-circle border shadow-sm", style: "width: 120px; height: 120px; object-fit: cover;" %>
+            <% else %>
+              <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
+            <% end %>
           </div>
           <h3 class="fw-bold mb-1"><%= @user.name %></h3>
           <p class="text-muted small mb-4"><%= @user.email %></p>

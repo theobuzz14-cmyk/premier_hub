@@ -3,10 +3,10 @@ class Admin::PostsController < ApplicationController
   before_action :admin_user           # 管理者必須
 
   def index
-    @posts = Post.includes(:team, :user).all.order(created_at: :desc)
-    @comments = Comment.includes(:user, post: :team).all.order(created_at: :desc)
-    @groups = Group.all.order(created_at: :desc)
-    
+    @posts = Post.includes(:team, :user).order(created_at: :desc).page(params[:post_page]).per(10)
+    @comments = Comment.includes(:user, post: :team).order(created_at: :desc).page(params[:comment_page]).per(10)
+    @groups = Group.all.order(created_at: :desc).page(params[:group_page]).per(10)
+
     # ダッシュボード用の統計データ
     @total_posts_count = Post.count
     @total_users_count = User.count

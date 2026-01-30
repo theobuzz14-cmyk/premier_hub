@@ -1,2 +1,37 @@
-<h1>Groups#edit</h1>
-<p>Find me in app/views/groups/edit.html.erb</p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h1 class="h3 fw-bold mb-2">グループ情報の編集</h1>
+            <p class="text-muted small">変更内容を入力して更新してください</p>
+          </div>
+
+          <%= form_with model: @group, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "グループ名を入力" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :introduction, "紹介文", class: "form-label fw-bold" %>
+              <%= f.text_area :introduction, class: "form-control", rows: 6, placeholder: "グループの紹介文を入力してください" %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :team_id, "対象チーム", class: "form-label fw-bold" %>
+              <%= f.collection_select :team_id, Team.all, :id, :name, { include_blank: "選択してください" }, { class: "form-select" } %>
+              <div class="form-text text-danger small">※対象チームを変更すると参加メンバーが混乱する可能性があるためご注意ください</div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.submit "変更を保存する", class: "btn btn-primary btn-lg rounded-pill" %>
+              <%= link_to 'キャンセルして戻る', group_path(@group), class: "btn btn-link text-muted" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

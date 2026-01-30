@@ -4,7 +4,6 @@
       <div class="card shadow-sm border-0 mb-4">
         <div class="card-body text-center p-4">
           <div class="mb-3">
-            <%# アイコン画像がある場合は表示、ない場合はデフォルトアイコン %>
             <% if @user.avatar.attached? %>
               <%= image_tag @user.avatar, class: "rounded-circle border shadow-sm", style: "width: 120px; height: 120px; object-fit: cover;" %>
             <% else %>
@@ -14,7 +13,6 @@
           <h3 class="fw-bold mb-1"><%= @user.name %></h3>
           <p class="text-muted small">Premier Hub サポーター</p>
 
-          <%# 管理者が他人のページを見た時だけ、管理用の退会処理ボタンを出す %>
           <% if user_signed_in? && current_user.admin? && @user != current_user %>
             <hr>
             <div class="d-grid mt-3">
@@ -32,31 +30,76 @@
     </div>
 
     <div class="col-md-8">
-      <h4 class="fw-bold mb-4">
-        <i class="bi bi-chat-left-text me-2"></i><%= @user.name %> さんの投稿一覧
-      </h4>
+      <%# 1. 投稿一覧 %>
+      <div class="mb-5">
+        <h4 class="fw-bold mb-4">
+          <i class="bi bi-chat-left-text me-2"></i><%= @user.name %> さんの投稿一覧
+        </h4>
 
-      <% if @posts.any? %>
-        <div class="list-group shadow-sm border-0">
-          <% @posts.each do |post| %>
-            <%= link_to team_post_path(post.team, post), class: "list-group-item list-group-item-action p-4 border-0 mb-2 rounded shadow-sm" do %>
-              <div class="d-flex justify-content-between align-items-center">
-                <p class="text-muted small mb-0">
-                  <i class="bi bi-clock"></i> <%= l post.created_at, format: :long %>
-                </p>
-                <span class="text-primary small">
-                  続きを読む <i class="bi bi-chevron-right"></i>
-                </span>
-              </div>
+        <% if @posts.any? %>
+          <div class="list-group shadow-sm border-0">
+            <% @posts.each do |post| %>
+              <%= link_to team_post_path(post.team, post), class: "list-group-item list-group-item-action p-4 border-0 mb-2 rounded shadow-sm" do %>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="fw-bold text-dark mb-0"><%= post.title %></h5>
+                  <div class="text-end">
+                    <p class="text-muted small mb-0">
+                      <i class="bi bi-clock"></i> <%= l post.created_at, format: :long %>
+                    </p>
+                    <span class="text-primary small">
+                      続きを読む <i class="bi bi-chevron-right"></i>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5 bg-white rounded shadow-sm border border-dashed">
+            <i class="bi bi-chat-dots text-muted" style="font-size: 3rem;"></i>
+            <p class="text-muted mt-3 mb-0">まだ投稿はありません。</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+          <h5 class="fw-bold mb-0 text-dark">
+            <i class="bi bi-people-fill me-2 text-primary"></i>参加中のグループ
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <% if @user.approved_groups.any? %>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+              <% @user.approved_groups.each do |group| %>
+                <div class="col">
+                  <%= link_to group_path(group), class: "text-decoration-none" do %>
+                    <div class="p-3 border rounded-3 hover-shadow transition h-100 d-flex align-items-center">
+                      <div class="me-3" style="width: 35px; height: 35px;">
+                        <% if group.team.logo_url.present? %>
+                          <%= image_tag group.team.logo_url, class: "img-fluid h-100", style: "object-fit: contain;" %>
+                        <% else %>
+                          <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border h-100 w-100">
+                            <span class="fw-bold text-secondary" style="font-size: 0.75rem;"><%= group.team.name.first %></span>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div>
+                        <div class="fw-bold text-dark small"><%= group.name %></div>
+                        <span class="text-muted" style="font-size: 0.7rem;"><%= group.team.name %></span>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <p class="text-muted small mb-0">参加中のグループはありません。</p>
+            </div>
           <% end %>
         </div>
-      <% else %>
-        <div class="text-center py-5 bg-white rounded shadow-sm border border-dashed">
-          <i class="bi bi-chat-dots text-muted" style="font-size: 3rem;"></i>
-          <p class="text-muted mt-3 mb-0">まだ投稿はありません。</p>
-        </div>
-      <% end %>
+      </div>
 
       <div class="text-center mt-5">
         <%= link_to :back, class: "btn btn-link text-muted text-decoration-none" do %>
@@ -64,5 +107,6 @@
         <% end %>
       </div>
     </div>
+
   </div>
 </div>

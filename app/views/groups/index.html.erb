@@ -1,27 +1,53 @@
-<h1>グループ一覧</h1>
-<%= link_to '新規グループ作成', new_group_path, class: "btn btn-primary" %>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>対象チーム</th>
-      <th>グループ名</th>
-      <th>オーナー</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @groups.each do |group| %>
-      <tr>
-        <td><%= group.team.name %></td>
-        <td><%= link_to group.name, group_path(group) %></td>
-        <td><%= group.owner.name %></td>
-        <td>
-          <% if group.owner == current_user %>
-            <%= link_to '編集', edit_group_path(group), class: "btn btn-sm btn-outline-secondary" %>
-          <% end %>
-        </td>
-      </tr>
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 fw-bold mb-0">グループ一覧</h1>
+    <%= link_to new_group_path, class: "btn btn-primary rounded-pill px-4 shadow-sm" do %>
+      <i class="bi bi-plus-lg"></i> 新規グループ作成
     <% end %>
-  </tbody>
-</table>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @groups.each do |group| %>
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <%# チームロゴまたはテキスト表示 %>
+              <div class="me-3" style="width: 40px; height: 40px;">
+                <% if group.team.logo_url.present? %>
+                  <%= image_tag group.team.logo_url, alt: group.team.name, class: "img-fluid h-100", style: "object-fit: contain;" %>
+                <% else %>
+                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border h-100 w-100">
+                    <span class="fw-bold text-secondary small"><%= group.team.name.first %></span>
+                  </div>
+                <% end %>
+              </div>
+              <div>
+                <span class="badge bg-light text-primary border"><%= group.team.name %></span>
+              </div>
+            </div>
+
+            <h5 class="card-title fw-bold mb-2">
+              <%= link_to group.name, group_path(group), class: "text-decoration-none text-dark" %>
+            </h5>
+            
+            <p class="text-muted small mb-3 text-truncate-2">
+              <%= group.introduction %>
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+              <div class="small text-muted">
+                <i class="bi bi-person-circle"></i> オーナー: <%= group.owner.name %>
+              </div>
+              <% if group.owner == current_user %>
+                <%= link_to '編集', edit_group_path(group), class: "btn btn-sm btn-outline-secondary rounded-pill" %>
+              <% end %>
+            </div>
+          </div>
+          <%# カード全体をクリック可能にしたい場合 %>
+          <%= link_to "", group_path(group), class: "stretched-link" unless group.owner == current_user %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

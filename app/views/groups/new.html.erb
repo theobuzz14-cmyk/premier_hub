@@ -1,19 +1,33 @@
-<h1>新規グループ作成</h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-5">
+          <h1 class="h3 fw-bold mb-4 text-center">新規グループ作成</h1>
 
-<%= form_with model: @group, local: true do |f| %>
-  <div>
-    <%= f.label :name, "グループ名" %>
-    <%= f.text_field :name %>
-  </div>
-  <div>
-    <%= f.label :introduction, "紹介文" %>
-    <%= f.text_area :introduction %>
-  </div>
-  <div>
-    <%= f.label :team_id, "対象チーム" %>
-    <%= f.collection_select :team_id, Team.all, :id, :name, include_blank: "選択してください" %>
-  </div>
-  <%= f.submit "作成する" %>
-<% end %>
+          <%= form_with model: @group, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "例：東京住みのユナイテッドファン" %>
+            </div>
 
-<%= link_to '戻る', groups_path %>
+            <div class="mb-3">
+              <%= f.label :introduction, "紹介文", class: "form-label fw-bold" %>
+              <%= f.text_area :introduction, class: "form-control", rows: 4, placeholder: "グループの目的や活動内容を入力してください" %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :team_id, "対象チーム", class: "form-label fw-bold" %>
+              <%= f.collection_select :team_id, Team.all, :id, :name, { include_blank: "選択してください" }, { class: "form-select" } %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.submit "作成する", class: "btn btn-primary btn-lg rounded-pill" %>
+              <%= link_to '戻る', groups_path, class: "btn btn-link text-muted" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

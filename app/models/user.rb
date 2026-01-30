@@ -23,4 +23,8 @@ class User < ApplicationRecord
   def inactive_message
     self.is_active ? super : :withdraw # :withdraw は後で辞書ファイルに追加
   end
+  
+  def approved_groups
+    groups.where(group_users: { status: :approved })
+  end
 end

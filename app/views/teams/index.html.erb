@@ -3,9 +3,14 @@
     <div class="col">
       <div class="card h-100 shadow-sm border-0">
         <div class="card-body text-center">
-          <div class="mb-3" style="height: 80px;">
+          <div class="mb-3 d-flex align-items-center justify-content-center" style="height: 80px;">
             <% if team.logo_url.present? %>
               <%= image_tag team.logo_url, alt: team.name, class: "img-fluid h-100", style: "object-fit: contain;" %>
+            <% else %>
+              <%# ロゴがない場合のテキスト表示 %>
+              <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border" style="width: 60px; height: 60px;">
+                <span class="fw-bold text-secondary" style="font-size: 1.5rem;"><%= team.name.first %></span>
+              </div>
             <% end %>
           </div>
           

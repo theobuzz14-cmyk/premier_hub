@@ -1,36 +1,83 @@
-<h1><%= @group.name %></h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <%# 戻るリンク %>
+      <div class="mb-4">
+        <%= link_to groups_path, class: "text-decoration-none text-muted small" do %>
+          <i class="bi bi-arrow-left"></i> グループ一覧に戻る
+        <% end %>
+      </div>
 
-<div>
-  <p><strong>対象チーム:</strong> <%= @group.team.name %></p>
-  <p><strong>オーナー:</strong> <%= @group.owner.name %></p>
-  <p><strong>紹介文:</strong></p>
-  <p><%= simple_format(@group.introduction) %></p>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-5">
+          <%# チーム情報バッジ %>
+          <div class="mb-3">
+            <span class="badge bg-light text-primary border px-3 py-2 rounded-pill">
+              <i class="bi bi-shield-check me-1"></i><%= @group.team.name %> 公式コミュニティ
+            </span>
+          </div>
+
+          <h1 class="display-6 fw-bold mb-3"><%= @group.name %></h1>
+          
+          <div class="d-flex align-items-center mb-4 text-muted">
+            <div class="me-4">
+              <i class="bi bi-person-circle me-1"></i>
+              <strong>オーナー:</strong> <%= @group.owner.name %>
+            </div>
+          </div>
+
+          <div class="bg-light p-4 rounded-3 mb-5">
+            <h5 class="fw-bold mb-3">グループ紹介</h5>
+            <div class="text-secondary lh-lg">
+              <%= simple_format(@group.introduction) %>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-3 align-items-center pt-4 border-top">
+            <% if user_signed_in? %>
+              <% if @group.owner_id == current_user.id %>
+                <%# 1. オーナー向け表示 %>
+                <%= link_to edit_group_path(@group), class: "btn btn-primary rounded-pill px-4" do %>
+                  <i class="bi bi-pencil-square me-1"></i> 情報を編集する
+                <% end %>
+                <%= link_to group_group_users_path(@group), class: "btn btn-outline-info rounded-pill px-4" do %>
+                  <i class="bi bi-people-fill me-1"></i> 参加申請一覧を確認
+                <% end %>
+              <% else %>
+                <%# 2. 一般ユーザー向け表示 %>
+                <% group_user = current_user.group_users.find_by(group_id: @group.id) %>
+
+                <% if group_user.nil? %>
+                  <%# 未参加の場合 %>
+                  <%= link_to group_group_users_path(@group), method: :post, class: "btn btn-success rounded-pill px-5 shadow-sm" do %>
+                    <i class="bi bi-person-plus-fill me-1"></i> 参加申請を送る
+                  <% end %>
+                <% elsif group_user.pending? %>
+                  <%# 申請中の場合 %>
+                  <div class="alert alert-warning d-flex align-items-center mb-0 rounded-pill px-4 py-2">
+                    <i class="bi bi-hourglass-split me-2"></i>
+                    <strong>承認待ちです</strong>
+                  </div>
+                <% elsif group_user.approved? %>
+                  <%# 参加済みの場合 %>
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-success px-4 py-2 rounded-pill">
+                      <i class="bi bi-check-circle-fill me-1"></i> 参加中
+                    </span>
+                    <%= link_to group_user_path(group_user), method: :delete, data: { confirm: "本当に退会しますか？" }, class: "btn btn-outline-danger btn-sm rounded-pill px-3" do %>
+                      グループを退会する
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-muted small">※参加申請にはログインが必要です。</p>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<hr>
-
-<% if user_signed_in? %>
-  <% if @group.owner_id == current_user.id %>
-    <%# 1. オーナー向け表示 %>
-    <%= link_to 'グループ情報を編集する', edit_group_path(@group), class: "btn btn-primary" %>
-    <%= link_to '参加申請一覧を確認する', group_group_users_path(@group), class: "btn btn-info" %>
-  <% else %>
-    <%# 2. 一般ユーザー向け表示：現在のステータスを確認 %>
-    <% group_user = current_user.group_users.find_by(group_id: @group.id) %>
-
-    <% if group_user.nil? %>
-      <%# 未参加の場合：参加申請ボタン %>
-      <%= link_to '参加申請を送る', group_group_users_path(@group), method: :post, class: "btn btn-success" %>
-    <% elsif group_user.pending? %>
-      <%# 申請中の場合：ラベル表示 %>
-      <span class="badge" style="background-color: #ffc107; color: #000;">承認待ちです</span>
-    <% elsif group_user.approved? %>
-      <%# 参加済みの場合：退会ボタン %>
-      <span class="badge" style="background-color: #ffc107; color: #000;">参加中</span>
-      <%= link_to 'グループを退会する', group_user_path(group_user), method: :delete, data: { confirm: "本当に退会しますか？" }, class: "btn btn-danger" %>
-    <% end %>
-  <% end %>
-<% end %>
-
-<br>
-<%= link_to '一覧に戻る', groups_path %>

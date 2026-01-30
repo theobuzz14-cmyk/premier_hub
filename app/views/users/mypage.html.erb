@@ -21,20 +21,20 @@
         </div>
       </div>
 
-      <div class="card shadow-sm border-0">
+      <div class="card shadow-sm border-0 mb-4">
         <div class="card-body p-4">
           <h6 class="fw-bold text-danger mb-3">アカウント設定</h6>
           <% if @user == current_user %>
-            <div class="mt-5 border-top pt-4">
+            <div class="mt-2 border-top pt-3">
               <% unless current_user.admin? %>
                 <p class="text-muted small">一度退会するとデータの復旧はできません。</p>
                 <%= link_to '退会する', withdraw_users_path, 
                       method: :patch, 
                       data: { confirm: "本当に退会しますか？" }, 
-                      class: "btn btn-outline-danger btn-sm" %>
+                      class: "btn btn-outline-danger btn-sm w-100" %>
               <% else %>
-                <div class="alert alert-info d-inline-block small">
-                  <i class="bi bi-shield-lock"></i> 管理者アカウントはマイページから退会できません。
+                <div class="alert alert-info d-block small mb-0">
+                  <i class="bi bi-shield-lock"></i> 管理者は退会できません。
                 </div>
               <% end %>
             </div>
@@ -44,31 +44,73 @@
     </div>
 
     <div class="col-md-8">
-      <h4 class="fw-bold mb-4">
-        <i class="bi bi-chat-left-text me-2"></i>自分の投稿一覧
-      </h4>
+      <div class="mb-5">
+        <h4 class="fw-bold mb-4">
+          <i class="bi bi-chat-left-text me-2"></i>自分の投稿一覧
+        </h4>
 
-      <% if @posts.any? %>
-        <div class="list-group shadow-sm border-0">
-          <% @posts.each do |post| %>
-            <%= link_to team_post_path(post.team, post), class: "list-group-item list-group-item-action p-4 border-0 mb-2 rounded shadow-sm" do %>
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <h5 class="fw-bold text-dark mb-0"><%= post.title %></h5>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">
-                  <%= post.team.name %>
-                </span>
-              </div>
-              <p class="text-muted small mb-0">
-                <i class="bi bi-clock"></i> <%= l post.created_at, format: :long %>
-              </p>
+        <% if @posts.any? %>
+          <div class="list-group shadow-sm border-0">
+            <% @posts.each do |post| %>
+              <%= link_to team_post_path(post.team, post), class: "list-group-item list-group-item-action p-4 border-0 mb-2 rounded shadow-sm" do %>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h5 class="fw-bold text-dark mb-0"><%= post.title %></h5>
+                  <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">
+                    <%= post.team.name %>
+                  </span>
+                </div>
+                <p class="text-muted small mb-0">
+                  <i class="bi bi-clock"></i> <%= l post.created_at, format: :long %>
+                </p>
+              <% end %>
             <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5 bg-white rounded shadow-sm border">
+            <p class="text-muted mb-0">まだ投稿はありません。</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+          <h5 class="fw-bold mb-0 text-dark">
+            <i class="bi bi-people-fill me-2 text-primary"></i>参加中のグループ
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <% if @user.approved_groups.any? %>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+              <% @user.approved_groups.each do |group| %>
+                <div class="col">
+                  <%= link_to group_path(group), class: "text-decoration-none" do %>
+                    <div class="p-3 border rounded-3 hover-shadow transition h-100 d-flex align-items-center bg-light-hover">
+                      <div class="me-3" style="width: 40px; height: 40px;">
+                        <% if group.team.logo_url.present? %>
+                          <%= image_tag group.team.logo_url, class: "img-fluid h-100", style: "object-fit: contain;" %>
+                        <% else %>
+                          <div class="rounded-circle bg-white d-flex align-items-center justify-content-center border h-100 w-100">
+                            <span class="fw-bold text-secondary" style="font-size: 0.8rem;"><%= group.team.name.first %></span>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div>
+                        <div class="fw-bold text-dark small"><%= group.name %></div>
+                        <span class="text-muted" style="font-size: 0.75rem;"><%= group.team.name %></span>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <p class="text-muted small mb-0">参加中のグループはありません。</p>
+            </div>
           <% end %>
         </div>
-      <% else %>
-        <div class="text-center py-5 bg-white rounded shadow-sm">
-          <p class="text-muted mb-0">まだ投稿はありません。</p>
-        </div>
-      <% end %>
+      </div>
     </div>
+
   </div>
 </div>

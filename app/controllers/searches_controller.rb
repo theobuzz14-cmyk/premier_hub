@@ -6,9 +6,12 @@ class SearchesController < ApplicationController
     @model = params[:model] # 'post' か 'user' が入る
 
     if @model == 'user'
-      @results = User.where("name LIKE ?", "%#{@query}%").order(:name)
+      @results = User.active
+                     .where("name LIKE ?", "%#{@query}%")
+                     .order(:name)
     else
-      @results = Post.includes(:team).where("title LIKE ? OR body LIKE ?", "%#{@query}%", "%#{@query}%")
+      @results = Post.active_user.includes(:team)
+                     .where("title LIKE ? OR body LIKE ?", "%#{@query}%", "%#{@query}%")
                      .order(created_at: :desc)
     end
   end

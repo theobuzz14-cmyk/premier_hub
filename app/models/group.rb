@@ -8,4 +8,6 @@ class Group < ApplicationRecord
   validates :introduction, presence: true, length: { maximum: 500 }
   validates :owner_id, presence: true
   validates :team_id, presence: true
+
+  scope :active_owner, -> { joins(:owner).where(users: { is_active: true }) }
 end

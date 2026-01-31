@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
   def index
-    @groups = Group.all
+    @groups = Group.active_owner
   end
 
   def show

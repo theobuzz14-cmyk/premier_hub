@@ -27,4 +27,6 @@ class User < ApplicationRecord
   def approved_groups
     groups.where(group_users: { status: :approved })
   end
+
+  scope :active, -> { where(is_active: true) }
 end

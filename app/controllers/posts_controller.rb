@@ -18,6 +18,7 @@ class PostsController < ApplicationController
 
   def show
     @post = @team.posts.find(params[:id])
+    @comments = @post.comments.active_user.order(created_at: :desc)
   end
 
   def edit

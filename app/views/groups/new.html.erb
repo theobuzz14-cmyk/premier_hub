@@ -9,12 +9,12 @@
             <%= render 'shared/error_messages', object: f.object %>
             <div class="mb-3">
               <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
-              <%= f.text_field :name, class: "form-control", placeholder: "例：東京住みのユナイテッドファン" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "50文字以内で入力してください" %>
             </div>
 
             <div class="mb-3">
               <%= f.label :introduction, "紹介文", class: "form-label fw-bold" %>
-              <%= f.text_area :introduction, class: "form-control", rows: 4, placeholder: "グループの目的や活動内容を入力してください" %>
+              <%= f.text_area :introduction, class: "form-control", rows: 4, placeholder: "500文字以内で入力してください" %>
             </div>
 
             <div class="mb-4">

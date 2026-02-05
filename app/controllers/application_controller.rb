@@ -20,13 +20,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # 退会（アカウント削除）後の遷移先を指定
+  # 退会（アカウント削除）後の遷移先
   def after_sign_out_path_for(resource_or_scope)
-    if resource_or_scope == :user
-      new_user_registration_path # 新規登録画面
-    else
-      root_path
-    end
+    root_path
   end
 
   # 管理者かどうかをチェックし、そうでなければトップへ強制送還する

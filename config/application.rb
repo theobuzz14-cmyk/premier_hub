@@ -18,6 +18,10 @@ module PremierHub
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+    # 日本時間(JST)に設定
+    config.time_zone = 'Tokyo'
+    # DBの保存時刻も日本時間に
+    config.active_record.default_timezone = :local
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

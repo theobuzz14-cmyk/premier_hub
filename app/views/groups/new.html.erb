@@ -6,6 +6,7 @@
           <h1 class="h3 fw-bold mb-4 text-center">新規グループ作成</h1>
 
           <%= form_with model: @group, local: true do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
             <div class="mb-3">
               <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
               <%= f.text_field :name, class: "form-control", placeholder: "例：東京住みのユナイテッドファン" %>

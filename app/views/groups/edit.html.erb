@@ -9,6 +9,7 @@
           </div>
 
           <%= form_with model: @group, local: true do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
             <div class="mb-3">
               <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
               <%= f.text_field :name, class: "form-control", placeholder: "グループ名を入力" %>

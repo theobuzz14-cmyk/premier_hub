@@ -9,6 +9,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body p-4 p-md-5">
           <%= form_with(model: [@team, @post], local: true) do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
             <div class="mb-3">
               <%= f.label :title, "スレッドタイトル", class: "form-label fw-bold" %>
               <%= f.text_field :title, class: "form-control form-control-lg", placeholder: "タイトルの例：今節のスタメン予想" %>

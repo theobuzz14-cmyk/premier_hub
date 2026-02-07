@@ -9,7 +9,12 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to team_post_path(@post.team, @post), notice: 'コメントを投稿しました'
     else
-      redirect_to team_post_path(@post.team, @post), alert: 'コメントを入力してください'
+      @team = @post.team
+      #「停止ユーザーを除外するスコープ」を使いつつ、全コメントを取得
+      @comments = @post.comments.active_user.includes(:user).order(created_at: :desc)
+      
+      flash.now[:alert] = 'コメントを入力してください'
+      render "posts/show"
     end
   end
 

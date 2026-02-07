@@ -9,14 +9,15 @@
       <div class="card shadow-sm border-0">
         <div class="card-body p-4 p-md-5">
           <%= form_with(model: [@team, @post], local: true) do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
             <div class="mb-3">
               <%= f.label :title, "スレッドタイトル", class: "form-label fw-bold" %>
-              <%= f.text_field :title, class: "form-control form-control-lg", placeholder: "タイトルの例：今節のスタメン予想" %>
+              <%= f.text_field :title, class: "form-control form-control-lg", placeholder: "50文字以内で入力してください" %>
             </div>
 
             <div class="mb-4">
               <%= f.label :body, "内容", class: "form-label fw-bold" %>
-              <%= f.text_area :body, rows: 6, class: "form-control", placeholder: "話題を広げるための詳細を書いてください" %>
+              <%= f.text_area :body, rows: 6, class: "form-control", placeholder: "1000文字以内で入力してください" %>
             </div>
 
             <div class="d-grid gap-2">

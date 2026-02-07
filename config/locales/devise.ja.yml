@@ -1,0 +1,27 @@
+ja:
+  devise:
+    confirmations:
+      confirmed: "メールアドレスが確認できました。"
+      send_instructions: "アカウントの有効化について数分以内にメールでご連絡します。"
+      send_paranoid_instructions: "メールアドレスが登録済みの場合、本人確認用のメールが数分以内に送信されます。"
+    failure:
+      already_authenticated: "すでにログインしています。"
+      inactive: "アカウントが有効化されていません。メールに記載された手順にしたがって、アカウントを有効化してください。"
+      invalid: "%{authentication_keys}またはパスワードが違います。"
+      locked: "アカウントはロックされています。"
+      last_attempt: "もう一回誤るとアカウントがロックされます。"
+      not_found_in_database: "%{authentication_keys}またはパスワードが違います。"
+      timeout: "セッションがタイムアウトしました。もう一度ログインしてください。"
+      unauthenticated: "ログインもしくはアカウント登録してください。"
+      unconfirmed: "メールアドレスの本人確認が必要です。"
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "ログアウトしました。"
+    registrations:
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報を変更しました。"
+      destroyed: "アカウントを削除しました。またのご利用をお待ちしております。"
+    passwords:
+      send_instructions: "パスワードの再設定について数分以内にメールでご連絡いたします。"
+      updated: "パスワードが正しく変更されました。"
